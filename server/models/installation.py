@@ -1,7 +1,7 @@
 from config import db
 from sqlalchemy_serializer import SerializerMixin
-from artist import Artist
-from exhibit import Exhibit
+from models.artist import Artist
+from models.exhibit import Exhibit
 
 class Installation(db.Model,SerializerMixin):
     __tablename__ = "installations"
