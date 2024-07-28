@@ -1,0 +1,12 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "flask-p4-project-Museum-App/server/",
+            "color": "foldercolorizer.PureGold"
+        },
+        {
+            "folderPath": "flask-p4-project-Museum-App/client/",
+            "color": "foldercolorizer.Plum"
+        }
+    ]
+}
