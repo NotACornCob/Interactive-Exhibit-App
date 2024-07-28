@@ -10,3 +10,5 @@ class Artist(db.Model,SerializerMixin):
 
     def __repr__(self):
         return f'<artist id = {self.id}, name={self.name} bio={self.bio}>'
+    
+    
