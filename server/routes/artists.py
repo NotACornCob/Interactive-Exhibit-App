@@ -8,4 +8,4 @@ class ArtistsResource(Resource):
         return artists, 201
         pass
 
-api.add_resource(ArtistsResource, '/artists')
+api.add_resource(ArtistsResource, '/api/artists')

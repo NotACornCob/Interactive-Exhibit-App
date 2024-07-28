@@ -8,4 +8,4 @@ class ExhibitsResource(Resource):
         return exhibits, 201
         pass
 
-api.add_resource(ExhibitsResource,'/exhibits')
+api.add_resource(ExhibitsResource,'/api/exhibits')
