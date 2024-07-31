@@ -10,8 +10,6 @@ class Installation(db.Model,SerializerMixin):
     name = db.Column(db.String)
     image_url = db.Column(db.String)
     description = db.Column(db.String)
-    user_rating = db.Column(db.Integer)
-    user_review = db.Column(db.String)
     artist = db.Column(db.Integer, db.ForeignKey(Artist.id))
     exhibit = db.Column(db.Integer, db.ForeignKey(Exhibit.id))
 

@@ -11,11 +11,14 @@ export default function CenteredTabs() {
   };
 
       return (
-    <Box sx={{ width: 'full-width', bgcolor: 'background.paper' }}>
-      <Tabs value={value} onChange={handleChange} centered>
-        <Tab label="Item One" />
-        <Tab label="Item Two" />
-        <Tab label="Item Three" />
+    <Box sx={{ width: 'fullwidth', bgcolor: 'background.paper' }}>
+     
+      <Tabs value={value} onChange={handleChange} sx={{ 
+      'width': 'full-width',
+        }} centered>
+        <Tab label="Home" href="/" value={0} />
+        <Tab label="Featured Artists" href="/Artists" value={1} />
+        <Tab label="Add Installation" href="/InstallationForm" value={2} />
       </Tabs>
     </Box>
   );

@@ -18,4 +18,4 @@ function ArtistProvider({children}) {
     return <ArtistContext.Provider value={{artists}}>{children}</ArtistContext.Provider>
 }
 
-export {ArtistContext, ArtistProvider}
+export { ArtistContext, ArtistProvider }

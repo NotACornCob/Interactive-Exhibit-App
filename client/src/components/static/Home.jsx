@@ -1,10 +1,13 @@
 import React from 'react';
-import Card from '../card'
-import ArtistCard from '../artists/artistcard'
 import ArtistList from '../artists/artistlist'
+import InstallationList from '../installations/installationlist'
+import ExhibitList from '../exhibits/exhibitlist'
 
 function Home() {
-    return ( <div>< ArtistList /></div> );
+    return ( <div>
+        < InstallationList />
+        </div> );
 }
 
 export default Home;
+

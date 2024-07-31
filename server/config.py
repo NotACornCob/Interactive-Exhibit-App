@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, g, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
@@ -29,8 +29,8 @@ db = SQLAlchemy(app=app, metadata=metadata)
 
 migrate = Migrate(app=app, db=db)
 
-#bcrypt = Bcrypt(app=app)
+bcrypt = Bcrypt(app=app)
 
 api = Api(app=app)
 
-#CORS(app)
+CORS(app)
