@@ -6,8 +6,8 @@ from flask_restful import Resource
 def run_logic_before_any_route():
     if request.endpoint == "/api/installations":
         id = request.view_args.get('id')
-        installation = Installation.query.get(id)
-        if not installation:
+        g.installation = Installation.query.get(id)
+        if not g.installation:
             return {"error": "installation does not exist"}
 
 class InstallationsResource(Resource):
@@ -21,10 +21,10 @@ class InstallationsResource(Resource):
         name = data.get("name")
         image_url = data.get("image_url")
         description = data.get("description")
-        artist = data.get("artist_id")
-        exhibit = data.get("exhibit_id")
+        artist_id = data.get("artist_id")
+        exhibit_id = data.get("exhibit_id")
         try:
-            installation = Installation(name=name, image_url=image_url, description=description, artist=artist, exhibit=exhibit)
+            installation = Installation(name=name, image_url=image_url, description=description, artist_id=artist_id, exhibit_id=exhibit_id)
             db.session.add(installation)
             db.session.commit()
             return installation.to_dict(), 201
@@ -36,8 +36,25 @@ api.add_resource(InstallationsResource, '/api/installations', endpoint="installa
 class InstallationsResource(Resource):
     def get(self, id):
         installation = Installation.query.get(id)
-        return make_response(installation.to_dict(), 201)
+        return installation.to_dict(), 201
         pass
-
+    
+    def patch(self, id):
+        installation = Installation.query.get(id)
+        data = request.get_json()
+        for key, value in data.items():
+            if hasattr(installation, key):
+                setattr(installation, key, value)
+            else: 
+                return {"message": f"{key} is not an attribute of installation"}, 422
+            db.session.add(installation)
+            db.session.commit()
+            return installation.to_dict(), 200
+        
+    def delete(self,id):
+        installation = Installation.query.get(id)
+        db.session.delete(installation)
+        db.session.commit(),
+        return {}, 204
 
 api.add_resource(InstallationsResource, "/api/installations/<int:id>", endpoint="installation")

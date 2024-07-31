@@ -1,8 +1,8 @@
-"""model migration
+"""add columns
 
-Revision ID: 72a1c7ba88e7
-Revises: bc8bfec60aa7
-Create Date: 2024-07-28 13:07:09.625772
+Revision ID: 750c241a0819
+Revises: 70f636e46063
+Create Date: 2024-07-31 10:06:16.040551
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '72a1c7ba88e7'
-down_revision = 'bc8bfec60aa7'
+revision = '750c241a0819'
+down_revision = '70f636e46063'
 branch_labels = None
 depends_on = None
 
@@ -35,12 +35,10 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('image_url', sa.String(), nullable=True),
     sa.Column('description', sa.String(), nullable=True),
-    sa.Column('user_rating', sa.Integer(), nullable=True),
-    sa.Column('user_review', sa.String(), nullable=True),
-    sa.Column('artist', sa.Integer(), nullable=True),
-    sa.Column('exhibit', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['artist'], ['artists.id'], name=op.f('fk_installations_artist_artists')),
-    sa.ForeignKeyConstraint(['exhibit'], ['exhibits.id'], name=op.f('fk_installations_exhibit_exhibits')),
+    sa.Column('artist_id', sa.Integer(), nullable=True),
+    sa.Column('exhibit_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['artist_id'], ['artists.id'], name=op.f('fk_installations_artist_id_artists')),
+    sa.ForeignKeyConstraint(['exhibit_id'], ['exhibits.id'], name=op.f('fk_installations_exhibit_id_exhibits')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_installations'))
     )
     # ### end Alembic commands ###
