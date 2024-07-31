@@ -8,6 +8,7 @@ import { CardActionArea } from '@mui/material';
 function ArtistCard({artist}) {
 
   return (
+    <div>
     <Card sx={{ maxWidth: 600 }}>
       <CardActionArea>
         <CardContent>
@@ -20,6 +21,8 @@ function ArtistCard({artist}) {
         </CardContent>
       </CardActionArea>
     </Card>
+    <br/>
+    </div>
   );
 }
 

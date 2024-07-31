@@ -7,24 +7,30 @@ import { CardActionArea } from '@mui/material';
 
 function InstallationCard({installation}) {
     return (
-        <Card sx={{ maxWidth: 600, elevation: 1 }}>
+      <div>
+        <Card sx={{ maxWidth: 800, elevation: 1 }}>
           <CardActionArea elevation={1}>
             <CardMedia
               component="img"
-              height="400"
+              height="600"
               image={installation.image_url}
               alt= "featured installation"
             />
             </CardActionArea>
             <CardContent>
-              <Typography gutterBottom variant="h3" component="div">
+              <Typography variant="h4">
                 {installation.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
+                {/* {installation.artist.name} */}
+              </Typography>
+              <Typography variant="body2">
               {installation.description}
               </Typography>
             </CardContent>
         </Card>
+        <br/>
+        </div>
       );
     }
 

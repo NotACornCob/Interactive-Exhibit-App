@@ -13,7 +13,7 @@ export default function ButtonAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{background:'purple', filter: "drop-shadow(0px 3px 5px #4444dd)"}}>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1, "text-align":"center", margin: "10px" }}>
-            INVICTUS MUSEUM
+            THE NIGHTSHADE
           </Typography>
       </AppBar>
     </Box>

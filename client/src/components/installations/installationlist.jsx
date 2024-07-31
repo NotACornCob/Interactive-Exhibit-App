@@ -10,11 +10,13 @@ function InstallationList() {
     const InstallationCards = installations.map(installation => <InstallationCard key={ installation.id } installation={ installation } />)
 
     return (
+        <div>
         <Grid containerdirection="column"
         justify="center"
         alignItems="center">
     <div>{InstallationCards}</div>
-    </Grid> )
+    </Grid>
+    </div>)
 }
 
 export default InstallationList;

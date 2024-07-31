@@ -1,7 +1,7 @@
 import {useEffect, useState, useContext} from 'react'
 import { useFormik, Formik } from 'formik'
 import * as yup from 'yup'
-import { InstallationContext, InstallationProvider } from "/home/notacorncob/phase4/flask-p4-project-Museum-App-Busted/client/src/context/InstallationContext.jsx"
+import { InstallationContext, InstallationProvider } from "/home/notacorncob/phase4/flask-p4-project-Museum-App/client/src/context/InstallationContext.jsx"
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card';
@@ -9,6 +9,9 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
+import Button from '@mui/material/Button';
+import ButtonUsage from '../button';
+import InstallationList from '../installations/installationlist'
 
 
 const InstallationForm = () => {
@@ -22,7 +25,8 @@ const InstallationForm = () => {
         "image_url": "",
         "description": "", 
         "artist_id": "8",
-        "exhibit_id": "1" 
+        "exhibit_id": "1"
+         
     }
 
     const validationSchema = yup.object({
@@ -63,30 +67,30 @@ const InstallationForm = () => {
             <div>
             <form onSubmit={ formik.handleSubmit}>
             <Card>
+            <Container alignItems="center">
             <Grid containerdirection="column"
             justify="center"
             alignItems="center"
-            alignContent="center">
-            <Container alignItems="center">
+            alignContent="center"
+            textAlign="center">
             <Typography variant="body2">
             <h3>Add Installation</h3>
             </Typography>
                     <Typography variant="body2" color="text.primary">
-                    <label htmlFor="name">Installation Name: </label>
+                    <label htmlFor="name">Installation Name:       </label>
                     <input type="text" name="name" id="name" value={formik.values.name} onChange={formik.handleChange} />
                 <br />
                 <div>
-                    <label htmlFor="image_url">Installation Photo:</label>
+                    <label htmlFor="image_url">Installation Photo:      </label>
                     <input type="text" name="image_url" id="image_url" value={formik.values.image_url} onChange={formik.handleChange}/>
-                </div><br />
+                </div>
                 <div>
-                    <label htmlFor="description">Description: </label>
+                    <label htmlFor="description">Description:     </label>
                     <input type="text" name="description" id="description" value={formik.values.description} onChange={formik.handleChange} />
                 </div>
-                
                 <div>
-                    <label htmlFor="artist_id">Artist: </label>
-                    <input type="text" name="artist" id="artist" value={formik.values.artist} onChange={formik.handleChange} />
+                    <label htmlFor="artist_id">Artist:       </label>
+                    <input type="text" name="artist_id" id="artist_id" value={formik.values.id} onChange={formik.handleChange} />
                 </div>
                 <div>
                     <label htmlFor="exhibit_id">Exhibit: </label>
@@ -94,12 +98,15 @@ const InstallationForm = () => {
                         {exhibitOptions}
                     </select>
                 </div><br/>
-                <input type="submit" value="Create Installation"></input>
+                <input type="submit" value="Create Installation">
+                </input>
                 </Typography><br/>
-                </Container>
                 </Grid>
+                </Container>
                 </Card>
             </form>
+            <br/>
+            <InstallationList/>
         </div>
 
     )

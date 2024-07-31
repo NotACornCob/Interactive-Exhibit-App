@@ -2,6 +2,7 @@ import React from 'react';
 import ArtistCard from './artistcard'
 import { ArtistContext } from '../../context/ArtistContext'
 import { useContext } from 'react'
+import { Typography } from '@mui/material';
 
 function ArtistList() {
     const {artists} = useContext(ArtistContext)
@@ -9,7 +10,7 @@ function ArtistList() {
     const ArtistCards = artists.map(artist => <ArtistCard key={ artist.id } artist={artist} />)
 
     return ( <>
-    <div>Artist List</div>
+    <div><Typography variant="h4" component="div" sx={{ flexGrow: 1, "text-align":"center", margin: "10px" }}>Featured Artists</Typography></div>
     <div>{ArtistCards}</div>
     </>
      )

@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 class ExhibitsResource(Resource):
     def get(self):
-        exhibits = [exhibit.to_dict() for exhibit in Exhibit.query.all()]
+        exhibits = [exhibit.to_dict(only=('name','location','id','installations')) for exhibit in Exhibit.query.all()]
         return exhibits, 201
         pass
 
@@ -20,4 +20,4 @@ class ExhibitsResource(Resource):
         except:
             return {"errors": ["validation errors"]}, 400
 
-api.add_resource(ExhibitsResource,'/api/exhibits')
+api.add_resource(ExhibitsResource,'/api/exhibits', endpoint='exhibits')
