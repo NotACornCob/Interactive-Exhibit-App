@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 class ExhibitsResource(Resource):
     def get(self):
-        exhibits = [exhibit.to_dict(only=('name','location','id','installations')) for exhibit in Exhibit.query.all()]
+        exhibits = [exhibit.to_dict(only=('name','location','id', 'installations')) for exhibit in Exhibit.query.all()]
         return exhibits, 201
         pass
 

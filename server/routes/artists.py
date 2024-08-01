@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 class ArtistsResource(Resource):
     def get(self):
-        artists = [artist.to_dict(only=('name','bio','id')) for artist in Artist.query.all()]
+        artists = [artist.to_dict(only=('name','bio','id','installations')) for artist in Artist.query.all()]
         return artists, 201
         pass
 

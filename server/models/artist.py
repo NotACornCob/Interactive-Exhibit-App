@@ -8,6 +8,7 @@ class Artist(db.Model,SerializerMixin):
     name = db.Column(db.String)
     bio = db.Column(db.String)
     installations = db.relationship('Installation', back_populates='artist')
+    serialize_rules = ('-installations.artists','-exhibits.artists')
 
     def __repr__(self):
         return f'<artist id = {self.id}, name={self.name} bio={self.bio}>'

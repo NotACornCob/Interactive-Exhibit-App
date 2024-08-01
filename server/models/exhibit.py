@@ -8,6 +8,7 @@ class Exhibit(db.Model, SerializerMixin):
     name = db.Column(db.String)
     location = db.Column(db.String)
     installations = db.relationship("Installation", back_populates='exhibit')
+    serialize_rules = ('-installations.exhibits','-artists.exhibits')
 
     def __repr__(self):
         return f'<exhibit id = {self.id}, name={self.name}, location={self.location}>'

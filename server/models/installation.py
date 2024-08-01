@@ -12,8 +12,8 @@ class Installation(db.Model,SerializerMixin):
     description = db.Column(db.String)
     artist_id = db.Column(db.Integer, db.ForeignKey(Artist.id))
     exhibit_id = db.Column(db.Integer, db.ForeignKey(Exhibit.id))
-    artist = db.relationship('Artist', back_populates='installations', cascade='delete')
-    exhibit = db.relationship('Exhibit', back_populates='installations', cascade='delete')
+    artist = db.relationship('Artist', back_populates='installations', cascade='all')
+    exhibit = db.relationship('Exhibit', back_populates='installations', cascade='all')
     serialize_rules = ('-exhibit.installations', '-artist.installations')
 
     def __repr__(self):
