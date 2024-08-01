@@ -16,9 +16,10 @@ export default function CenteredTabs() {
       <Tabs value={value} onChange={handleChange} sx={{ 
       'width': 'full-width',
         }} centered>
-        <Tab label="Home" href="/" value={0} />
-        <Tab label="Featured Artists" href="/Artists" value={1} />
-        <Tab label="Add Installation" href="/InstallationForm" value={2} />
+        <Tab label="Home" href="/" />
+        <Tab label="Featured Artists" href="/Artists"/>
+        <Tab label="Add Installation" href="/InstallationForm" />
+        <Tab label="Edit Installation" href="/EditForm" />
       </Tabs>
     </Box>
   );

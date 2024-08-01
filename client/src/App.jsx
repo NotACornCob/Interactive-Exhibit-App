@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/static/Home.jsx";
 import { InstallationContext, InstallationProvider } from "./context/InstallationContext.jsx"
@@ -13,9 +13,16 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import InstallationForm from "./components/installations/installationform.jsx"
+import EditForm from "./components/installations/editform.jsx"
+import InstallationCard from "./components/installations/installationcard.jsx"
+
 
 function App() {
   const [count, setCount] = useState(0)
+
+
+ /*  const InstallationCards = installations.map(installation => <InstallationCard key={ installation.id } installation={ installation } />)
+ */
 
   return (
     <>
@@ -31,6 +38,8 @@ function App() {
               <Route path="/" element={<Home />} value="Home" />
               <Route path="/InstallationForm" element={<InstallationForm /> } value="InstallationForm" />
               <Route path="/Artists" element={<ArtistList />} value="Artists" />
+              <Route path="/EditForm" value="EditForm" element={<EditForm/>}/>
+              <Route path="/Installation/:id" element={<EditForm />}/> 
             </Routes>
             </Container>
             </Typography>

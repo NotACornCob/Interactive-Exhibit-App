@@ -16,7 +16,20 @@ function ExhibitProvider({children}) {
         loadExhibits()
     }, [])
 
-    return <ExhibitContext.Provider value={{exhibits}}>{children}</ExhibitContext.Provider>
+    async function addExhibit(ExhibitValues) {
+        const resp = await fetch("http://127.0.0.1:5555/api/exhibits", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(ExhibitValues)
+        })
+    const exhibit = await resp.json()
+    setExhibits([...exhibits, exhibit])
+}
+
+    return <ExhibitContext.Provider value={{exhibits, addExhibit}}>{children}</ExhibitContext.Provider>
 }
 
 

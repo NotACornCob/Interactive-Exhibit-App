@@ -29,9 +29,28 @@ function InstallationProvider({children}) {
     setInstallations([...installations, installation])
 }
 
-
-    return <InstallationContext.Provider value={{installations, addInstallation}}>{children}</InstallationContext.Provider>
+    async function removeInstallation(id) {
+        const resp = await fetch(`http://127.0.0.1:5555/api/installations/${id}`, {
+        method: "DELETE",
+    })
+    const updatedInstallations = installations.filter((installation) => installation.id !== id)
+    setInstallations(updatedInstallations)
 }
 
+    async function editInstallation(installation) {
+        const resp = await fetch(`http://127.0.0.1:5555/api/installations/${installation.id}`, {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(installation)
+        })
+    const updatedInstallation = await resp.json()
+    setInstallations([...installations,updatedInstallation])
+    }
+
+return <InstallationContext.Provider value={{installations, addInstallation, removeInstallation, editInstallation}}>{children}</InstallationContext.Provider>
+}
 
 export {InstallationContext, InstallationProvider}

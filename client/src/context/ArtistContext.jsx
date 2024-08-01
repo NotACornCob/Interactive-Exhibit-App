@@ -15,7 +15,20 @@ function ArtistProvider({children}) {
         loadArtists()
     }, [])
 
-    return <ArtistContext.Provider value={{artists}}>{children}</ArtistContext.Provider>
+    async function addArtist(ArtistValues) {
+        const resp = await fetch("http://127.0.0.1:5555/api/artists", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(ArtistValues)
+        })
+    const artist = await resp.json()
+    setArtists([...artists, artist])
+}
+
+    return <ArtistContext.Provider value={{artists, addArtist}}>{children}</ArtistContext.Provider>
 }
 
 export { ArtistContext, ArtistProvider }
