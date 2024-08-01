@@ -29,13 +29,19 @@ function InstallationProvider({children}) {
     setInstallations([...installations, installation])
 }
 
-    async function removeInstallation(id) {
-        const resp = await fetch(`http://127.0.0.1:5555/api/installations/${id}`, {
-        method: "DELETE",
-    })
-    const updatedInstallations = installations.filter((installation) => installation.id !== id)
-    setInstallations(updatedInstallations)
-}
+async function removeInstallation(id) {
+    const resp = await fetch(`http://127.0.0.1:5555/api/installations/${id}`, {
+      method: "DELETE",
+    });
+    if (resp.ok) {
+      const updatedInstallations = installations.filter(
+        (installation) => installation.id !== id
+      );
+      setInstallations(updatedInstallations);
+    } else {
+      console.log("Failed to delete installation with id:", id);
+    }
+  }
 
     async function editInstallation(installation) {
         const resp = await fetch(`http://127.0.0.1:5555/api/installations/${installation.id}`, {

@@ -12,33 +12,22 @@ import Typography from '@mui/material/Typography';
 
 const validationSchema = yup.object({
   name: yup
-    .string('Enter installation name')
-    .required('Installation name is required'),
-  description: yup
     .string('Enter installation description')
-    .min(8, 'description should be of minimum 8 characters length')
+    .min(1, 'bio should be of minimum 8 characters length')
     .required('Installation description is required'),
-  image_url: yup
-    .string('Enter installation image URL')
+  bio: yup
+    .string('Enter installation description')
+    .min(1, 'bio should be of minimum 8 characters length')
+    .required('Installation description is required')
 });
 
-const InstallationForm = () => {
+const ArtistForm = () => {
 const [artists, setArtists] = useState([])
-const [exhibits, setExhibits] = useState([])
-const {addExhibit} = useContext(ExhibitContext)
 const {addArtist} = useContext(ArtistContext)
-const {addInstallation} = useContext(InstallationContext)
 
 const initialValues = {
-    "description": "",
-    "artist": "Shmappy",
-    "exhibit": "Pappy",
-    "artist_id": "1",
-    "exhibit_id": "1",
-    "name": "",
     "id": "",
-    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-14201-023.jpg"
-  ,
+    "bio": "",
 }
 
 const formik = useFormik({
@@ -46,8 +35,8 @@ const formik = useFormik({
     validationSchema,
     validateOnChange: false,
     onSubmit: function(values) {
-        alert("installation submitted!")
-        addInstallation(values)
+        alert("artist submitted!")
+        addArtist(values)
     }
 })
 
@@ -60,51 +49,27 @@ useEffect(() => {
     loadArtists()
 },[])
 
-  useEffect(() => {
+/*   useEffect(() => {
     const loadExhibits = async () => {
         const resp = await fetch("/api/exhibits")
         const data = await resp.json()
         setExhibits(data)
     }
     loadExhibits()
-},[])
+},[]) */
 
   const artistOptions = artists.map(artist => <option key={artist.id} value={artist.id}>{ artist.name }</option>)
-  const exhibitOptions = exhibits.map(exhibit => <option key={exhibit.id} value={exhibit.id}>{exhibit.name}</option>)
 
 
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
-        <Typography variant="subtitle1" display="inline" color="textSecondary"><br/>
-        <label htmlFor="exhibit_id" >Exhibit: </label>
-        </Typography>
-        <select name="exhibit_id" id="exhibit_id" value={formik.values.exhibit_id} fullWidth onChange={formik.handleChange}>
-        {exhibitOptions}
-        </select>
-        <Typography variant="subtitle1" display="inline" color="textSecondary"><br/>
-        <label htmlFor="artist_id" >Featured Artists: </label>
-        </Typography>
-        <select name="artist_id" id="artist_id" value={formik.values.artist_id} fullWidth onChange={formik.handleChange}>
-        {artistOptions}
-        </select>
-        <TextField
+      <TextField
           fullWidth
           id="name"
           name="name"
-          label="Installation Name"
+          label="Artist Name"
           value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-        />
-        <TextField
-          fullWidth
-          id="description"
-          name="description"
-          label="Installation Description"
-          value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.description && Boolean(formik.errors.description)}
@@ -112,15 +77,16 @@ useEffect(() => {
         />
         <TextField
           fullWidth
-          id="image_url"
-          name="image_url"
-          label="Installation Photo (URL)"
-          value={formik.values.image_url}
+          id="bio"
+          name="bio"
+          label="Artist Bio"
+          value={formik.values.bio}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          /* error={formik.touched.image && Boolean(formik.errors.image)}
-          helperText={formik.touched.image && formik.errors.image} */
-        /><br/>
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
+        />
+        <br/>
         <Button color="tertiary" variant="contained" fullWidth type="submit">
           Submit
         </Button>
@@ -129,4 +95,4 @@ useEffect(() => {
   );
 };
 
-export default InstallationForm
+export default ArtistForm

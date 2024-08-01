@@ -34,9 +34,6 @@ function editHandler() {
               <Typography variant="h4">
                 {installation.name}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {installation.artist.name}
-              </Typography>
               <Typography variant="body2">
               {installation.description}
               </Typography>

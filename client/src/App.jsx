@@ -15,6 +15,8 @@ import Box from '@mui/material/Box';
 import InstallationForm from "./components/installations/installationform.jsx"
 import EditForm from "./components/installations/editform.jsx"
 import InstallationCard from "./components/installations/installationcard.jsx"
+import ArtistForm from "./components/artists/artistform.jsx"
+import ExhibitForm from "./components/exhibits/exhibitform.jsx"
 
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
               <Route path="/Artists" element={<ArtistList />} value="Artists" />
               <Route path="/EditForm" value="EditForm" element={<EditForm/>}/>
               <Route path="/Installation/:id" element={<EditForm />}/> 
+              <Route path="/ArtistForm" element={<ArtistForm />} value="ArtistForm" />
+              <Route path="/ExhibitForm" element={<ExhibitForm />} value="ExhibitForm" />
             </Routes>
             </Container>
             </Typography>

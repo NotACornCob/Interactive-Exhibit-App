@@ -29,22 +29,22 @@ const [installations, setInstallations] = useState([])
 const {editInstallation} = useContext(InstallationContext)
 
 const initialValues = {
-    "description": "A bare-breasted woman lights a torch from a brazier held by Death, accompanied by his scythe, while above her hovers a winged demon holding thunderbolts and snakes in his hands. At the upper left sits King Minos, judge of the dead, attended by the three-headed dog Cerberus.",
-    "exhibit_id": 1,
-    "name": "A Nightmare",
-    "artist": {
-      "id": 1,
-      "name": "Giovanni David",
-      "bio": "A Genoese artist succinctly described by his biographer Federico Alizeri as ‘with few known works, a bizarre style, and an obscure, almost mysterious life’."
-    },
-    "artist_id": 1,
-    "exhibit": {
-      "id": 1,
-      "location": "Central Plaza",
-      "name": "European Paintings, 1500-1800"
-    },
-    "id": 1,
-    "image_url": "../src/assets/ANightmare.jpg"
+  "description": "",
+  "exhibit_id": "",
+  "name": "",
+  "artist": {
+    "id": "",
+    "name": "",
+    "bio": ""
+  },
+  "artist_id": 1,
+  "exhibit": {
+    "id": "",
+    "location": "",
+    "name": ""
+  },
+  "id": "",
+  "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-14201-023.jpg"
 }
 
 const formik = useFormik({
