@@ -17,7 +17,7 @@ function ExhibitProvider({children}) {
     }, [])
 
     async function addExhibit(ExhibitValues) {
-        const resp = await fetch("http://127.0.0.1:5555/api/exhibits", {
+        const resp = await fetch("/api/exhibits", {
             method: "POST",
             headers: {
                 "Accept": "application/json",

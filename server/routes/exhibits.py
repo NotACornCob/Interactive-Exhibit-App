@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 class ExhibitsResource(Resource):
     def get(self):
-        exhibits = [exhibit.to_dict(only=('name','location','id', 'installations')) for exhibit in Exhibit.query.all()]
+        exhibits = [exhibit.to_dict() for exhibit in Exhibit.query.all()]
         return exhibits, 201
         pass
 
@@ -12,8 +12,9 @@ class ExhibitsResource(Resource):
         data = request.get_json()
         name = data.get("name")
         location = data.get("location")
+        exhibit_img = data.get("exhibit_img")
         try:
-            exhibit = Exhibit(name=name, location=location)
+            exhibit = Exhibit(name=name, location=location, exhibit_img=exhibit_img)
             db.session.add(exhibit)
             db.session.commit()
             return exhibit.to_dict(), 201

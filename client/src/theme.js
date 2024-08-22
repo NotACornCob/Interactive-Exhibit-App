@@ -2,34 +2,45 @@ import { createTheme } from '@mui/material/styles';
 
 // Create a theme instance.
 const theme = createTheme({
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            bgcolor: '#262129',
+          }
+        }
+      }
+    },
     palette: {
-      mode: 'dark',
       primary: {
-        main: '#8e24aa',
+        main: '#302f30',
       },
       secondary: {
-        main: '#2196f3',
+        main: '#302f30',
       },
       background: {
-        default: '#1e1b19',
+        default: '#262129',
       },
+    button: {    
+      primary: '#cf25cf',
+      secondary: '#ee3832',}
     },
     typography: {
       fontFamily: 'Lato',
       h1: {
-        fontFamily: 'Raleway',
+        fontFamily: 'Lato',
       },
       h2: {
-        fontFamily: 'Raleway',
+        fontFamily: 'Lato',
       },
       h3: {
-        fontFamily: 'Raleway',
+        fontFamily: 'Lato',
       },
       h4: {
-        fontFamily: 'Raleway',
+        fontFamily: 'Lato',
       },
       h5: {
-        fontFamily: 'Raleway',
+        fontFamily: 'Lato',
       },
       h6: {
         fontFamily: 'Oswald',

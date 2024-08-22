@@ -1,53 +1,95 @@
-import { useState, React, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import Button from '@mui/material/Button';
-import { InstallationContext } from '../../context/InstallationContext'
-import App from '../../App';
+import Button from '@material-ui/core/Button';
+import { useCookies } from 'react-cookie';
+import { io } from 'socket.io-client';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function InstallationCard({installation}) {
-  const {removeInstallation} = useContext(InstallationContext)
+  const [buttonStatus, setButtonStatus] = useState(false);
+  const [cookies] = useCookies('session_id');
+  const [installation_id, setInstallationId] = useState('');
+  const user_id = cookies.session_id
+  const [receivedUsernames, setReceivedUsernames] = useState([]);
 
-  function deleteHandler() {
-    removeInstallation(installation.id)
-  }
 
-function editHandler() {
-  setInstallation(installation.id)
-};
+  const notify = (data) => toast(data + '' + ' has gained 3 points!', {
+    theme:"dark"
+  })
 
-    return (
-      <div>
-        <Card sx={{ maxWidth: 800, elevation: 1 }}>
-          <CardActionArea elevation={1}>
-            <CardMedia
+  const handleClick = (value) => {
+    if (buttonStatus === false) {
+      setButtonStatus(true);
+    } else {
+      setButtonStatus(false);
+    }
+    setInstallationId(installation.id)
+  };  
+
+  useEffect(() => {
+    if (buttonStatus === true) {
+      const socket = io("http://localhost:5555", {
+        transports: ["websocket"],
+        upgrade: false,
+      });      
+  
+      socket.on("connect", () => {
+       console.log('client connected')
+       socket.emit('interact', user_id, installation_id)
+      })
+
+      socket.on("interact_data", (username) => {
+        console.log("data received");
+        if (!receivedUsernames.includes(username)) {
+          notify(username);
+          setReceivedUsernames((prevUsernames) => [
+            ...prevUsernames,
+            username,
+          ]);
+        }
+      });
+    
+      socket.on("disconnect", (data) => {
+        console.log(data);
+      });
+  
+      return function cleanup() {
+        socket.off("interact_data")
+      };
+    }}
+  , [buttonStatus, receivedUsernames]);
+
+  return (
+    <div>
+    <Card color="primary" >
+       <CardContent>
+      <CardActionArea>
+        <CardMedia
               component="img"
-              height="600"
+              height="200"
               image={installation.image_url}
               alt= "featured installation"
             />
-            </CardActionArea>
-            <CardContent>
-              <Typography variant="h4">
-                {installation.name}
-              </Typography>
-              <Typography variant="body2">
-              {installation.description}
-              </Typography>
-              <Button color="primary" variant="contained" fullWidth type="submit"  href={`/Installation/${installation.id}`} onClick={editHandler} >
-              Edit
-              </Button>
-              <Button color="secondary" variant="contained" fullWidth type="submit" onClick={deleteHandler}>
-          Delete
-        </Button>
-            </CardContent>
-        </Card>
-        <br/>
-        </div>
-      );
-    }
+             </CardActionArea>
+          <Typography gutterBottom component="div">
+            {installation.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+          </Typography>
+          <Button color="primary" variant="contained" fullWidth type="submit" value={installation.id} onClick={handleClick}>
+                  Interact
+          </Button> 
+          </CardContent>
+    </Card><br/>
+    </div>
+  );
+}
 
 export default InstallationCard

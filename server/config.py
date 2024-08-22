@@ -1,4 +1,5 @@
-from flask import Flask, request, g, make_response
+from flask import Flask, request, g, make_response, render_template, jsonify, json
+from flask_socketio import SocketIO, emit, Namespace, send, join_room
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
@@ -25,6 +26,8 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+socketio = SocketIO(app, cors_allowed_origins="*", logger=True, autoconnect=False)
+
 db = SQLAlchemy(app=app, metadata=metadata)
 
 migrate = Migrate(app=app, db=db)
@@ -33,4 +36,6 @@ bcrypt = Bcrypt(app=app)
 
 api = Api(app=app)
 
-CORS(app)
+
+CORS(app,resources={r"/*":{"origins":"http://127.0.0.1:5173"}})
+

@@ -1,56 +1,56 @@
 
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/static/Home.jsx";
-import { InstallationContext, InstallationProvider } from "./context/InstallationContext.jsx"
-import { ArtistContext, ArtistProvider } from "./context/ArtistContext.jsx"
-import { ExhibitContext, ExhibitProvider } from "./context/ExhibitContext.jsx"
+import { ExhibitProvider } from "./context/ExhibitContext.jsx"
+import { UserProvider } from "./context/UserContext.jsx"
+import { ReviewProvider } from "./context/ReviewContext.jsx"
 import ExhibitList from "./components/exhibits/exhibitlist"
-import InstallationList from "./components/installations/installationlist.jsx"
-import ArtistList from "./components/artists/artistlist.jsx"
-import Nav from "./components/navigation/Nav"
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import InstallationForm from "./components/installations/installationform.jsx"
-import EditForm from "./components/installations/editform.jsx"
-import InstallationCard from "./components/installations/installationcard.jsx"
-import ArtistForm from "./components/artists/artistform.jsx"
-import ExhibitForm from "./components/exhibits/exhibitform.jsx"
-
+import ReviewForm from "./components/reviews/reviewform.jsx"
+import ReviewList from './components/reviews/reviewlist.jsx';
+import UserReviewList from './components/user/userreviewlist.jsx';
+import LeaderBoardList from './components/leaderboard/leaderboardlist.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { CookiesProvider } from 'react-cookie';
+import { InstallationProvider } from './context/InstallationContext.jsx';
+import { TeamProvider } from './context/TeamContext.jsx';
+import ResponsiveAppBar from './components/navigation/AppBar.jsx';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme.js';
+import TeamLeaderBoardList from './components/leaderboard/teamleaderboardlist.jsx';
+import Profile from './components/static/Profile.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
 
-
- /*  const InstallationCards = installations.map(installation => <InstallationCard key={ installation.id } installation={ installation } />)
- */
-
   return (
     <>
     <Router>
-      <ArtistProvider>
+      <ThemeProvider theme={theme}>
         <ExhibitProvider>
-          <InstallationProvider>
-          <Nav />
-          <Box sx={{ my: 4 }}>
-          <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-            <Container>
-            <Routes>
-              <Route path="/" element={<Home />} value="Home" />
-              <Route path="/InstallationForm" element={<InstallationForm /> } value="InstallationForm" />
-              <Route path="/Artists" element={<ArtistList />} value="Artists" />
-              <Route path="/EditForm" value="EditForm" element={<EditForm/>}/>
-              <Route path="/Installation/:id" element={<EditForm />}/> 
-              <Route path="/ArtistForm" element={<ArtistForm />} value="ArtistForm" />
-              <Route path="/ExhibitForm" element={<ExhibitForm />} value="ExhibitForm" />
-            </Routes>
-            </Container>
-            </Typography>
-            </Box>
-          </InstallationProvider>
+              <UserProvider>
+                <ReviewProvider>
+                  <InstallationProvider>
+                    <TeamProvider>
+                        <ToastContainer />
+                        <ResponsiveAppBar />
+                          <Routes>
+                            <Route path="/" element={<Home />} value="Home" />
+                            <Route path="/Exhibits" element={<ExhibitList />} value="Exhibits" />
+                            <Route path="/Reviews" element={<ReviewForm /> } value="Reviews" />
+                            <Route path="/Leaderboard" element={<LeaderBoardList />} value="Leaderboard" />
+                            <Route path="/AllReviews" element={<ReviewList />} value="AllReviews" />
+                            <Route path="/YourReviews" element={<UserReviewList />} value="YourReviews" />
+                            <Route path="/TeamLeaderboard" element={<TeamLeaderBoardList />} value="Leaderboard" />
+                            <Route path="/Profile" element={<Profile/>} value="Profile" />
+                          </Routes>
+                        </TeamProvider>
+                    </InstallationProvider>
+                </ReviewProvider>
+              </UserProvider>
         </ExhibitProvider>
-      </ArtistProvider>
+      </ThemeProvider>
     </Router> 
     </>
   )

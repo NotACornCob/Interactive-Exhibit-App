@@ -2,6 +2,7 @@ import React from 'react';
 import { ExhibitContext } from '../../context/ExhibitContext'
 import { useContext } from 'react'
 import ExhibitCard from './exhibitcard'
+import { Grid } from '@mui/material';
 
 function ExhibitList() {
     const {exhibits} = useContext(ExhibitContext)
