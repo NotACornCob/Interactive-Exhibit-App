@@ -73,10 +73,8 @@ import Box from '@mui/material/Box';
 
       socket.on("data", (data) => {
         console.log('data received')
-        socket.broadcast(notify(data))
+        notify(data)
       })
-
-      setLoading(false);
 
       socket.on("disconnect", (data) => {
         console.log(data);

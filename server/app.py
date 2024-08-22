@@ -21,31 +21,32 @@ def handle_connect():
 
 @socketio.on('message')
 def handle_message(message):
-    print('userdata sent')
-    socketio.emit('data',User.query.order_by(User.id.desc()).first().username)
+    user = User.query.order_by(User.id.desc()).first()
+    new_user = user.username
+    room = 'REC'
+    join_room(room)
+    print(new_user + ' has entered the ' + room + ' room.')
+    socketio.emit('data', new_user, room='REC')
 
 @socketio.on('review')
 def handle_review():
     socketio.emit('review_data',Review.query.order_by(Review.id.desc()).first().user.username)
     print('review data sent')
 
+
+
 @socketio.on('interact')
 def handle_interact(user_id, installation_id):
-    received_usernames = set()
     user = User.query.filter(User.id == user_id).first()
     points = User.query.filter(User.id == user_id).first().points
+    print(user.username)
     installation = Installation.query.filter(Installation.id == installation_id).first()
     installation.user_id = user_id
     installation.user = user
     db.session.commit()
     print(installation.user_id)
-
-    username = user.username
-
-    if username not in received_usernames:
-        socketio.emit('interact_data', username)
-        received_usernames.add(username)
-        print('interact data sent')
+    socketio.emit('interact_data', user.username)  # Emit to 'REC' room
+    print('interact data sent')
 
 @socketio.on('user')
 def handle_user(id):
@@ -62,6 +63,7 @@ def handle_users(users):
         points = User.query.filter(User.id == user_id).first().review_points + User.query.filter(User.id == user_id).first().interaction_points
         user['points'] = points
         updated_users.append(user)
+        db.session.commit()
     sorted_users = sorted(updated_users, key=lambda user: user['points'], reverse=True)
     socketio.emit('users_data', sorted_users)
 

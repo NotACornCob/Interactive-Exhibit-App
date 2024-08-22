@@ -3,14 +3,19 @@ import { useState, useContext, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/static/Home.jsx";
 import { ExhibitProvider } from "./context/ExhibitContext.jsx"
+import { SocketStateProvider } from "./context/SocketContext.jsx"
 import { UserProvider } from "./context/UserContext.jsx"
 import { ReviewProvider } from "./context/ReviewContext.jsx"
 import ExhibitList from "./components/exhibits/exhibitlist"
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import ReviewForm from "./components/reviews/reviewform.jsx"
 import ReviewList from './components/reviews/reviewlist.jsx';
 import UserReviewList from './components/user/userreviewlist.jsx';
 import LeaderBoardList from './components/leaderboard/leaderboardlist.jsx';
-import { ToastContainer } from 'react-toastify';
+import io from "socket.io-client";
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CookiesProvider } from 'react-cookie';
 import { InstallationProvider } from './context/InstallationContext.jsx';
@@ -33,6 +38,7 @@ function App() {
                 <ReviewProvider>
                   <InstallationProvider>
                     <TeamProvider>
+                    <CookiesProvider defaultSetOptions={{ path: '/' }}>
                         <ToastContainer />
                         <ResponsiveAppBar />
                           <Routes>
@@ -45,6 +51,7 @@ function App() {
                             <Route path="/TeamLeaderboard" element={<TeamLeaderBoardList />} value="Leaderboard" />
                             <Route path="/Profile" element={<Profile/>} value="Profile" />
                           </Routes>
+                        </CookiesProvider>
                         </TeamProvider>
                     </InstallationProvider>
                 </ReviewProvider>

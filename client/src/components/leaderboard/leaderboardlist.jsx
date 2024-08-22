@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
 
-function LeaderBoardList() {
+function UserLeaderBoardList() {
   const { users } = useContext(UserContext);
   const plainUsers = JSON.parse(JSON.stringify(users));
   const [socketInstance, setSocketInstance] = useState("");
@@ -22,10 +22,6 @@ function LeaderBoardList() {
   const [userId, setUserId] = useState("")
   const [updatedUser, setUpdatedUser] = useState("")
   const [leaderBoard, setLeaderBoard] = useState([])
-
-  const notify = (user, points) => toast(user + ' ' + 'has gained' + ' ' + points + ' ' + 'points!', {
-    theme:"dark"
-  })
     
     const Item = styled(Paper)(({ theme }) => ({
       backgroundColor: theme.palette.mode === '#1A2027',
@@ -65,7 +61,7 @@ function LeaderBoardList() {
   ];
     
     return (
-      <Container disableGutters="true" sx={{ bgcolor: '#262129'}}>
+      <Container sx={{ bgcolor: '#262129'}}>
         <Grid container direction="column"
         justify="center"
         alignItems="center"
@@ -79,4 +75,4 @@ function LeaderBoardList() {
     )
 }
 
-export default LeaderBoardList;
+export default UserLeaderBoardList;

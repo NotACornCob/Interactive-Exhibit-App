@@ -48,7 +48,7 @@ function LeaderBoardList() {
   ];
     
     return (
-      <Container disableGutters="true" sx={{ bgcolor: '#262129'}}>
+      <Container sx={{ bgcolor: '#262129'}}>
         <Grid container direction="column"
         justify="center"
         alignItems="center"

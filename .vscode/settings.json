@@ -9,5 +9,6 @@
             "color": "foldercolorizer.Plum"
         }
     ],
-    "search.useGlobalIgnoreFiles": true
+    "search.useGlobalIgnoreFiles": true,
+    "python.REPL.enableREPLSmartSend": false
 }

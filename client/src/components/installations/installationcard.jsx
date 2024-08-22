@@ -13,10 +13,11 @@ import { ToastContainer, toast } from 'react-toastify';
 function InstallationCard({installation}) {
   const [buttonStatus, setButtonStatus] = useState(false);
   const [cookies] = useCookies('session_id');
+  const [Installationcookies] = useCookies('session_id');
   const [installation_id, setInstallationId] = useState('');
   const user_id = cookies.session_id
   const [receivedUsernames, setReceivedUsernames] = useState([]);
-
+  const [receivedInstallations, setReceivedInstallations] = useState([]);
 
   const notify = (data) => toast(data + '' + ' has gained 3 points!', {
     theme:"dark"
@@ -35,7 +36,6 @@ function InstallationCard({installation}) {
     if (buttonStatus === true) {
       const socket = io("http://localhost:5555", {
         transports: ["websocket"],
-        upgrade: false,
       });      
   
       socket.on("connect", () => {
@@ -43,14 +43,12 @@ function InstallationCard({installation}) {
        socket.emit('interact', user_id, installation_id)
       })
 
-      socket.on("interact_data", (username) => {
+      socket.on("interact_data", (username, installation) => {
         console.log("data received");
-        if (!receivedUsernames.includes(username)) {
+        if (!receivedUsernames.includes(username) || !receivedInstallations.includes(installation)) {
           notify(username);
-          setReceivedUsernames((prevUsernames) => [
-            ...prevUsernames,
-            username,
-          ]);
+          setReceivedUsernames((prevUsernames) => [...prevUsernames, username]);
+          setReceivedInstallations((prevInstallations) => [...prevInstallations, installation]);
         }
       });
     
