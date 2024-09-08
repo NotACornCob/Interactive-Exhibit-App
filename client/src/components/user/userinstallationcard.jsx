@@ -1,72 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { useCookies } from 'react-cookie';
-import { io } from 'socket.io-client';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Container from '@mui/material/Container';
-
+import { SocketContext } from '../../context/SocketContext.jsx';
 
 function UserInstallationCard({installation}) {
   const [buttonStatus, setButtonStatus] = useState(false);
   const [cookies] = useCookies('session_id');
   const [installation_id, setInstallationId] = useState('');
-  const [socketInstance, setSocketInstance] = useState("");
   const [loading, setLoading] = useState(true);
   const user_id = cookies.session_id
-
+  const socket = useContext(SocketContext);
 
   const notify = (data) => toast(data + '' + ' has gained 3 points!', {
     theme:"dark"
   })
 
   const handleClick = (value) => {
-    if (buttonStatus === false) {
-      setButtonStatus(true);
-    } else {
-      setButtonStatus(false);
-    }
+    setButtonStatus(!buttonStatus);
     setInstallationId(installation.id)
   };  
 
   useEffect(() => {
-    if (buttonStatus === true) {
-      const socket = io("http://localhost:5555", {
-        transports: ["websocket"],
-        upgrade: false,
-        autoconnect: false,
-      });
-  
-      setSocketInstance(socket);
-      
-  
-      socket.on("connect", () => {
-       console.log('client connected')
-       console.log(user_id)
-       console.log(installation_id)
-       socket.emit('interact', user_id, installation_id)
-      })
-  
+    if (buttonStatus && socket) {
+      console.log('client connected')
+      console.log(user_id)
+      console.log(installation_id)
+      socket.emit('interact', user_id, installation_id)
+
       socket.on("interact_data", (username) => {
         console.log('data received')
-        socket.broadcast(notify(username))
+        notify(username)
         console.log(username)
       })
-  
+
       setLoading(false);
-  
-      socket.on("disconnect", (data) => {
-        console.log(data);
-      });
-  
-      return function cleanup() {
-        console.log('test')
+
+      return () => {
+        socket.off("interact_data");
       };
-    }}
-  , [buttonStatus]);
+    }
+  }, [buttonStatus, socket, user_id, installation_id]);
 
   return (
     <div>

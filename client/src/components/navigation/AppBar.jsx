@@ -15,11 +15,34 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useCookies } from 'react-cookie';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from '../../theme';
+import { useTheme } from '../../context/ThemeContext';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import lightTheme from '../../lightTheme';
+import darkTheme from '../../darkTheme';
 
 const pages = [  { text: 'Home', href: '/' },
-                 { text: 'Exhibits', href: '/Exhibits' }];
+                 { text: 'Reviews', href: '/Reviews' },
+                 { text:'Leaderboard', href: '/Leaderboard'},
+                 { text:'Team Leaderboard', href: '/TeamLeaderboard'}
+                ];
 const settings = ['Profile', 'Logout'];
+
+const styles = {
+  menuButton: {
+    color: '#ffffff',
+  },
+  typography: {
+    color: '#ffffff',
+    fontFamily: 'Lato, sans-serif',
+  },
+  button: {
+    color: '#ffffff !important',
+    '&:hover': {
+      color: '#ffffff !important',
+    },
+  },
+};
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -42,155 +65,138 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  return (
-    <>
-       {hasCookie ? (
-    <AppBar position="static" color="secondary">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <VideogameAssetIcon sx={{ display: { color:'#ffffff', xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'white',
-              textDecoration: 'vertical',
-            }}
-          >
-            REC CENTER
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color='#ffffff'
-              sx={{ color: '#ffffff' }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}>
-              <MenuItem key={0} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center"><Button href="/">Home</Button></Typography>
-              </MenuItem>
-              <MenuItem key={1} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center"><Button href="/Exhibits">Exhibit Center</Button></Typography>
-              </MenuItem>
-              <MenuItem key={2} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center"><Button href="/Reviews">Reviews</Button></Typography>
-              </MenuItem>
-              <MenuItem key={3} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center"><Button href="/Leaderboard">Leaderboard</Button></Typography>
-              </MenuItem>
-              <MenuItem key={4} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center"><Button href="/TeamLeaderboard">Team Leaderboard</Button></Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-          <VideogameAssetIcon sx={{ display: { color: '#ffffff', xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'white',
-              textDecoration: 'none',
-            }}
-          >
-            REC CENTER
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                href="/"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: '#ffffff', display: 'block' }}
-              >
-               Home
-              </Button>
-              <Button
-                href="/Reviews"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: '#ffffff', display: 'block' }}
-              >
-               Reviews
-              </Button>
-              <Button
-                href="/Leaderboard"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: '#ffffff', display: 'block' }}
-              >
-               Leaderboard
-              </Button>
-              <Button
-                href="/TeamLeaderboard"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: '#d2c443', display: 'block' }}
-              >
-               Team LeaderBoard
-              </Button>
-          </Box>
+  const { isDarkMode, toggleTheme } = useTheme();
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ color:'#ffffff', p: 0 }}>
-                <Avatar alt="Remy Sharp" src="../src/assets/5580993.png" />
+  return (
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      {hasCookie ? (
+        <AppBar position="static" elevation={2} sx={{backgroundImage: 'none'}}>
+          <Container maxWidth="xl">
+            <Toolbar disableGutters>
+              <VideogameAssetIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: '#ffffff' }} />
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="/"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'white',
+                  textDecoration: 'none',
+                }}
+              >
+                REC CENTER
+              </Typography>
+
+              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                  sx={{
+                    display: { xs: 'block', md: 'none' },
+                  }}
+                >
+                  {pages.map((page) => (
+                    <MenuItem key={page.text} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">{page.text}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+              <VideogameAssetIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: '#ffffff' }} />
+              <Typography
+                variant="h5"
+                noWrap
+                component="a"
+                href=""
+                sx={{
+                  mr: 2,
+                  display: { xs: 'flex', md: 'none' },
+                  flexGrow: 1,
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'white',
+                  textDecoration: 'none',
+                }}
+              >
+                REC CENTER
+              </Typography>
+              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                {pages.map((page) => (
+                  <Button
+                    key={page.text}
+                    href={page.href}
+                    onClick={handleCloseNavMenu}
+                    sx={styles.button}
+                  >
+                    {page.text}
+                  </Button>
+                ))}
+              </Box>
+
+              <Box sx={{ flexGrow: 0 }}>
+              <IconButton sx={{ ml: 1 }} onClick={toggleTheme}>
+                {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center"><Button href="/Profile">Profile</Button></Typography>
-                </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar> ) : null}
-    </>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Boi Sharp" src={cookies.username} />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            </Toolbar>
+          </Container>
+        </AppBar>
+      ) : null}
+    </ThemeProvider>
   );
 }
 export default ResponsiveAppBar;

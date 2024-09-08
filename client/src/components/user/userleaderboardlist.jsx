@@ -23,7 +23,6 @@ function LeaderBoardList() {
       useEffect(() => {
       const socket = io("http://localhost:5555", {
         transports: ["websocket"],
-        upgrade: false,
         autoconnect: false,
       });
       
@@ -54,7 +53,7 @@ function LeaderBoardList() {
         alignItems="center"
         disableGutters="true">
         <Grid item xs={12} >
-          <Typography variant="h4" sx={{bgcolor:"#262129", color:"#ffffff", alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Leaderboard</Typography>
+          <Typography variant="h4" sx={{bgcolor:"#262129", alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Leaderboard</Typography>
       </Grid>
     <div>{leaderBoard}</div>
     </Grid>

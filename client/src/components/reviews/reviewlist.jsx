@@ -11,12 +11,12 @@ function ReviewList() {
     const {reviews} = useContext(ReviewContext)
     const [cookies] = useCookies(['session_id']);
     const hasCookie = !!cookies.session_id;
-    const ReviewCards = reviews.map(review => <ReviewCard key={ review.id } review={review} />)
+    const ReviewCards = reviews.map(review => <ReviewCard key={review.id} review={review} />)
 
     return (
-        <Grid container spacing={1}>
+        <div padding='15px'>
         {ReviewCards}
-        </Grid>
+        </div>
     )
 }
     

@@ -64,7 +64,7 @@ function TeamLeaderBoardList() {
         alignItems="center"
         disableGutters="true">
         <Grid item xs={12} >
-          <Typography variant="h4" sx={{bgcolor:"#262129", color:"#ffffff", alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Team Leaderboard</Typography>
+          <Typography variant="h4" sx={{bgcolor:"#262129", alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Team Leaderboard</Typography>
       </Grid>
     <div>{teamLeaderBoard}</div>
     </Grid>

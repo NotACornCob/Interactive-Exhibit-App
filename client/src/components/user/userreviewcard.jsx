@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Container from '@mui/material/Container';
-import theme from '../../theme';
+import theme from '../../lightTheme';
 
 function UserReviewCard({review}) {
   const {removeReview} = useContext(ReviewContext)

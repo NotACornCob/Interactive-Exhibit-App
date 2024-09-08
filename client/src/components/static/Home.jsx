@@ -1,28 +1,27 @@
-import {useEffect, useState, useContext} from 'react'
-import io from "socket.io-client";
-import LoginForm from '../user/login'
-import LeaderBoardList from '../leaderboard/leaderboardlist';
+import { useContext } from 'react';
+import LoginForm from '../user/login';
 import { useCookies } from 'react-cookie';
 import ExhibitList from '../exhibits/exhibitlist';
-import InstallationCard from '../installations/installationcard';
-import InstallationList from '../installations/installationlist';
-
-
+import { SocketContext } from '../../context/SocketContext.jsx';
 
 function Home() {
-const [cookies] = useCookies(['session_id']);
-const socket = io.connect();
-const hasCookie = !!cookies.session_id;
+	const [cookies] = useCookies(['session_id']);
+	const socket = useContext(SocketContext);
+	const hasCookie = !!cookies.session_id;
 
-    return ( <div>
-        {hasCookie ? (
-        <ExhibitList />
-      ) :
-        <div>
-        < LoginForm />
-        </div>
-    }
-        </div> );
+	return (
+		<div>
+			{hasCookie ? (
+				<div>
+					<ExhibitList />
+				</div>
+			) : (
+				<div>
+					<LoginForm />
+				</div>
+			)}
+		</div>
+	);
 }
 
 export default Home;

@@ -10,11 +10,14 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Box from '@mui/material/Box';
 
 function ReviewCard({review}) {
   const {removeReview} = useContext(ReviewContext)
   const {editReview} = useContext(ReviewContext)
   const [EditMode, setEditMode] = useState(false)
+
+
 
 function deleteHandler() {
   removeReview(review.id)
@@ -54,24 +57,24 @@ const formik = useFormik({
 })
 
   return (
-  <Grid item xs={4} maxWidth="200">
-    <Card >
-      <CardActionArea>
-      </CardActionArea>
-        <CardContent>
-        <Typography variant="body2" color="#2f4aef">
+    <Card sx={{
+      backgroundImage: 'none',
+      padding: '15px',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    }}
+    elevation={3}>
+      <Typography variant="body2" color="#2f4aef">
         @{review.user.username}
-        </Typography>
-          <Typography variant="body" component="div">
-              {review.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-                  {review.body}
-          </Typography>
-        </CardContent>
+      </Typography>
+      <Typography variant="body1" sx={{ fontWeight: 'bold', my: 1 }}>
+        {review.title}
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 1 }}>
+        {review.body}
+      </Typography>
     </Card>
-  </Grid>
-
   );
 }
 

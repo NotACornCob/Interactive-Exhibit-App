@@ -1,47 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { useCookies } from 'react-cookie';
-import { io } from 'socket.io-client';
-import { ToastContainer, toast } from 'react-toastify';
-
+import { toast } from 'react-toastify';
+import { SocketContext } from '../../context/SocketContext.jsx';
 
 function InstallationCard({installation}) {
   const [buttonStatus, setButtonStatus] = useState(false);
   const [cookies] = useCookies('session_id');
-  const [Installationcookies] = useCookies('session_id');
   const [installation_id, setInstallationId] = useState('');
-  const user_id = cookies.session_id
+  const user_id = cookies.session_id;
   const [receivedUsernames, setReceivedUsernames] = useState([]);
   const [receivedInstallations, setReceivedInstallations] = useState([]);
+  const socket = useContext(SocketContext);
 
   const notify = (data) => toast(data + '' + ' has gained 3 points!', {
     theme:"dark"
-  })
+  });
 
   const handleClick = (value) => {
-    if (buttonStatus === false) {
-      setButtonStatus(true);
-    } else {
-      setButtonStatus(false);
-    }
-    setInstallationId(installation.id)
+    setButtonStatus(!buttonStatus);
+    setInstallationId(installation.id);
   };  
 
   useEffect(() => {
-    if (buttonStatus === true) {
-      const socket = io("http://localhost:5555", {
-        transports: ["websocket"],
-      });      
-  
-      socket.on("connect", () => {
-       console.log('client connected')
-       socket.emit('interact', user_id, installation_id)
-      })
+    if (buttonStatus && socket) {
+      console.log('client connected');
+      socket.emit('interact', user_id, installation_id);
 
       socket.on("interact_data", (username, installation) => {
         console.log("data received");
@@ -51,43 +40,36 @@ function InstallationCard({installation}) {
           setReceivedInstallations((prevInstallations) => [...prevInstallations, installation]);
         }
       });
-    
-      socket.on("disconnect", (data) => {
-        console.log(data);
-      });
-  
-      return function cleanup() {
-        socket.off("interact_data")
+
+      return () => {
+        socket.off("interact_data");
       };
-    }}
-  , [buttonStatus, receivedUsernames]);
+    }
+  }, [buttonStatus, socket, user_id, installation_id, receivedUsernames, receivedInstallations]);
 
   return (
     <div>
-    <Card color="primary" >
-       <CardContent>
-      <CardActionArea>
-        <CardMedia
+      <Card color="primary" >
+        <CardContent>
+          <CardActionArea>
+            <CardMedia
               component="img"
               height="200"
               image={installation.image_url}
-              alt= "featured installation"
+              alt="featured installation"
             />
-             </CardActionArea>
+          </CardActionArea>
           <Typography gutterBottom component="div">
             {installation.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-          </Typography>
-          <Button color="primary" variant="contained" fullWidth type="submit" value={installation.id} onClick={handleClick}>
-                  Interact
+          <Button variant="contained" classname="btn" color="primary" fullWidth onClick={handleClick}>
+            Interact
           </Button> 
-          </CardContent>
-    </Card><br/>
+        </CardContent>
+      </Card>
+      <br/>
     </div>
   );
 }
 
-export default InstallationCard
+export default InstallationCard;

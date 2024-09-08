@@ -17,14 +17,13 @@ import Box from '@mui/material/Box';
   const LoginForm = () => {
   const {addUser} = useContext(UserContext)
   const [cookies, setCookie] = useCookies();
-  const {login} = useContext(SocketContext)
+  const socket = useContext(SocketContext)
   const [socketInstance, setSocketInstance] = useState("");
   const [loading, setLoading] = useState(true);
   const [buttonStatus, setButtonStatus] = useState(false);
   const [usernameCookies] = useCookies(['username'])
-  const notify = (data) => toast(data + '' + ' has logged in!', {
-    theme:"dark"
-  })
+
+  const login = socket ? socket.login : null;
   
   const validationSchema = yup.object({
       username: yup
@@ -60,15 +59,9 @@ import Box from '@mui/material/Box';
 
   useEffect(() => {
     if (buttonStatus === true) {
-      const socket = io("http://localhost:5555", {
-        transports: ["websocket"],
-        upgrade: false,
-        autoconnect: false,
-      });      
-
       socket.on("connect", () => {
        console.log('client connected')
-       socket.send('message')
+       
       })
 
       socket.on("data", (data) => {
@@ -90,8 +83,8 @@ import Box from '@mui/material/Box';
 
     return (
       <Container>
-     <Box sx={{ bgcolor: '#262129', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding:'5px' }}>
-     <Card sx={{ margin: 'auto', padding:'5px', width:'400px' }}>
+     <Box sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding:'5px' }}>
+     <Card sx={{ margin: 'auto', padding:'5px', width:'400px', backgroundColor: '#ffffff' }}>
      <CardContent>
         <CardHeader title="Welcome to the REC ROOM!" subheader="In order to get the most interactive experience possible, we require all our guests create a username before using our app." />
         <form onSubmit={formik.handleSubmit}>
