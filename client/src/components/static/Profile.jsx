@@ -15,20 +15,20 @@ function Profile() {
     
     return (
         <div>
-            <Typography variant="h4" sx={{display:'flex', justifyContent: 'center', alignItems: 'center', padding:'15px'}}>Your Reviews</Typography>
+            <Typography variant="h4" color="secondary" sx={{display:'flex', justifyContent: 'center', alignItems: 'center', padding:'15px'}}>Your Reviews</Typography>
             {hasCookie ? (
                 <UserReviewList />
             ) : (
                 <div>
-                    <h4>You don't have any reviews!</h4>
+                    <Typography color="secondary">You don't have any reviews!</Typography>
                 </div>
             )}  
-            <Typography variant="h4" color="#ffffff" sx={{display:'flex', justifyContent: 'center', alignItems: 'center', padding:'15px'}}>REC ROOM Interactions</Typography>
+            <Typography variant="h4" color="secondary" sx={{display:'flex', justifyContent: 'center', alignItems: 'center', padding:'15px'}}>REC ROOM Interactions</Typography>
             {hasCookie ? (
                 <UserInstallationList/>
             ) : (
                 <div>
-                    <h4>You haven't interacted with any exhibits!</h4>
+                    <Typography color="secondary">You haven't interacted with any exhibits!</Typography>
                 </div>
             )}
         </div>

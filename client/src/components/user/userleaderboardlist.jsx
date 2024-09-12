@@ -3,10 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../context/UserContext';
 import LeaderBoardItem from './userleaderboarditem';
 import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import { io } from 'socket.io-client';
-import { ToastContainer, toast } from 'react-toastify';
 import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -27,7 +24,7 @@ function LeaderBoardList() {
       });
       
       socket.on("connect", () => {
-       socket.emit('users', plainUsers)
+       socket.volatile.emit('users', plainUsers)
       })
 
       socket.on("users_data", (updated_user) => {
@@ -47,13 +44,13 @@ function LeaderBoardList() {
   ];
     
     return (
-      <Container sx={{ bgcolor: '#262129'}}>
+      <Container >
         <Grid container direction="column"
         justify="center"
         alignItems="center"
         disableGutters="true">
         <Grid item xs={12} >
-          <Typography variant="h4" sx={{bgcolor:"#262129", alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Leaderboard</Typography>
+          <Typography variant="h4" sx={{alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Leaderboard</Typography>
       </Grid>
     <div>{leaderBoard}</div>
     </Grid>

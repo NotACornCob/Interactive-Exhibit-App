@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { CardActionArea } from '@mui/material';
 import { ReviewContext } from '../../context/ReviewContext';
 import Grid from '@mui/material/Grid';

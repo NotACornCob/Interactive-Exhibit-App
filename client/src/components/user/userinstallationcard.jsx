@@ -16,24 +16,32 @@ function UserInstallationCard({installation}) {
   const [loading, setLoading] = useState(true);
   const user_id = cookies.session_id
   const socket = useContext(SocketContext);
+  const toastId =  installation.id
 
-  const notify = (data) => toast(data + '' + ' has gained 3 points!', {
-    theme:"dark"
-  })
+  const notify = (data) => {
+    if(! toast.isActive(toastId.current)) {
+      toastId.current = toast(data + '' + ' has gained 3 points!' + {
+        theme:"dark",
+        limit: 1,
+      })
+    }
+  }
 
   const handleClick = (value) => {
     setButtonStatus(!buttonStatus);
     setInstallationId(installation.id)
   };  
 
+ 
+
   useEffect(() => {
     if (buttonStatus && socket) {
       console.log('client connected')
       console.log(user_id)
       console.log(installation_id)
-      socket.emit('interact', user_id, installation_id)
+      socket.volatile.emit('interact', user_id, installation_id)
 
-      socket.on("interact_data", (username) => {
+      socket.volatile.on("interact_data", (username) => {
         console.log('data received')
         notify(username)
         console.log(username)

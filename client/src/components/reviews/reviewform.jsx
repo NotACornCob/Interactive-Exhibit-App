@@ -3,14 +3,19 @@ import { ReviewContext } from '../../context/ReviewContext'
 import React from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import UserReviewList from '../user/userreviewlist';
 import { Box, Container, Card, CardContent, CardHeader } from '@mui/material';
 import { SocketContext } from '../../context/SocketContext.jsx';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 
 const notify = (data) => toast(data + '' + ' has submitted a review!', {
   theme:"dark"
@@ -48,7 +53,7 @@ const ReviewForm = () => {
       addReview(values);
       setCookie('reviewer','confirmed');
       if (socket) {
-        socket.emit('review');
+        socket.volatile.emit('review');
       }
     }
   });
@@ -75,11 +80,11 @@ const ReviewForm = () => {
     loadExhibits();
   }, []);
 
-  const exhibitOptions = exhibits.map(exhibit => <option key={exhibit.id} value={exhibit.id}>{ exhibit.name }</option>);
+  const exhibitOptions = exhibits.map(exhibit => <MenuItem key={exhibit.id} value={exhibit.id}>{ exhibit.name }</MenuItem>);
 
   return (
     <Container>
-      <Box sx={{ color: '#262129', bgcolor: '#262129', display: 'flex', justifyContent: 'center', alignItems: 'center', padding:'10px', height: '100vh'}}>
+      <Box sx={{ display: 'block', justifyContent: 'center', alignItems: 'center', height: '100vh', padding: '200px'}}>
         <Card>
           <CardContent>
             <CardHeader title="Submit a Review" subheader="Tell us what you think & get your name on the leaderboard!" />
@@ -87,10 +92,11 @@ const ReviewForm = () => {
               <Typography variant="subtitle1" color="textSecondary">
                 <label htmlFor="exhibit_id" >Exhibit: </label>
               </Typography>
-              <select name="exhibit_id" id="exhibit_id" value={formik.values.exhibit_id} fullWidth onChange={formik.handleChange}>
+              <Select name="exhibit_id" id="exhibit_id" value={formik.values.exhibit_id} onChange={formik.handleChange}>
                 {exhibitOptions}
-              </select>
+              </Select>
               <TextField
+                sx={{ mt: '10px' }}
                 fullWidth
                 id="title"
                 name="title"
@@ -113,14 +119,14 @@ const ReviewForm = () => {
                 helperText={formik.touched.body && formik.errors.body}
               />
               <br/>
-              <Button color="primary" variant="contained" fullWidth type="submit">
+              <Button color="primary" variant="contained" fullWidth type="submit" sx={{ mt: '10px' }}>
                 Submit
               </Button>
             </form>
           </CardContent>
-          {UserReviewList}
         </Card>
       </Box>
+      <UserReviewList />
     </Container>
   );
 };

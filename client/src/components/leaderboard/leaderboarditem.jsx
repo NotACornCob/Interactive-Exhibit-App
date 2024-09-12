@@ -34,7 +34,7 @@ function UserLeaderBoardItem({user}) {
               <Typography gutterBottom variant="h4" component="div" textAlign="center">
                 {user.points} points
               </Typography>
-              <Typography gutterBottom variant="h5" component="div" textAlign="center">
+              <Typography gutterBottom variant="h5" component="div" textAlign="center" sx={{color: "#3959cf"}}>
                 @{user.username}
               </Typography>
             </CardContent>

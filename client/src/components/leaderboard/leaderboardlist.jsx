@@ -30,7 +30,7 @@ function UserLeaderBoardList() {
   
   useEffect(() => {
     if (socket) {
-      socket.emit('users', plainUsers);
+      socket.volatile.emit('users', plainUsers);
 
       socket.on("users_data", (updated_user) => {
         setUserId(updated_user.id);
@@ -46,10 +46,10 @@ function UserLeaderBoardList() {
   }, [socket, users, plainUsers]);
 
   return (
-    <Container sx={{ bgcolor: '#262129'}}>
+    <Container >
       <Grid container direction="column" justify="center" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h4" sx={{bgcolor:"#262129", color:"#ffffff", alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Leaderboard</Typography>
+          <Typography variant="h4" sx={{ alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Leaderboard</Typography>
         </Grid>
         <div>{leaderBoard}</div>
       </Grid>

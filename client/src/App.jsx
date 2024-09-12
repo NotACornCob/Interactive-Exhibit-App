@@ -22,15 +22,20 @@ import Profile from './components/static/Profile.jsx';
 import { SocketProvider } from './context/SocketContext.jsx';
 import { useTheme } from './context/ThemeContext.jsx';
 import Box from '@mui/material/Box';
-
+import { NotificationProvider } from './context/NotificationContext';
+import { ToastProvider } from './context/ToastContext';
 
 function App() {
   const { theme } = useTheme();
   const [socket, setSocket] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const newSocket = io("http://localhost:5555", {
       transports: ["websocket"],
+      upgrade: false,
+      forceNew: true,
+      reconnection: false
     });
 
     setSocket(newSocket);
@@ -39,38 +44,42 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-        <Router>
-          <SocketProvider value={socket}>
-            <ExhibitProvider>
-              <UserProvider>
-                <ReviewProvider>
-                  <InstallationProvider>
-                    <TeamProvider>
-                      <CookiesProvider defaultSetOptions={{ path: '/' }}>
-                        <ToastContainer />
-                        <ResponsiveAppBar />
-                        <Box sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh' }}>
-                        <Routes>
-                          <Route path="/" element={<Home />} />
-                          <Route path="/Exhibits" element={<ExhibitList />} />
-                          <Route path="/Reviews" element={<ReviewForm />} />
-                          <Route path="/Leaderboard" element={<LeaderBoardList />} />
-                          <Route path="/AllReviews" element={<ReviewList />} />
-                          <Route path="/YourReviews" element={<UserReviewList />} />
-                          <Route path="/TeamLeaderboard" element={<TeamLeaderBoardList />} />
-                          <Route path="/Profile" element={<Profile/>} />
-                        </Routes>
-                        </Box>
-                      </CookiesProvider>
-                    </TeamProvider>
-                  </InstallationProvider>
-                </ReviewProvider>
-              </UserProvider>
-            </ExhibitProvider>
-          </SocketProvider>
-        </Router>
-    </ThemeProvider>
+    <ToastProvider>
+      <NotificationProvider>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <SocketProvider value={socket}>
+              <ExhibitProvider>
+                <UserProvider>
+                  <ReviewProvider>
+                    <InstallationProvider>
+                      <TeamProvider>
+                        <CookiesProvider defaultSetOptions={{ path: '/' }}>
+                          <ToastContainer />
+                          <Box sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh' }}>
+                            <ResponsiveAppBar />
+                            <Routes>
+                              <Route path="/" element={<Home />} />
+                              <Route path="/Exhibits" element={<ExhibitList />} />
+                              <Route path="/Reviews" element={<ReviewForm />} />
+                              <Route path="/Leaderboard" element={<LeaderBoardList />} />
+                              <Route path="/AllReviews" element={<ReviewList />} />
+                              <Route path="/YourReviews" element={<UserReviewList />} />
+                              <Route path="/TeamLeaderboard" element={<TeamLeaderBoardList />} />
+                              <Route path="/Profile" element={<Profile />} />
+                            </Routes>
+                          </Box>
+                        </CookiesProvider>
+                      </TeamProvider>
+                    </InstallationProvider>
+                  </ReviewProvider>
+                </UserProvider>
+              </ExhibitProvider>
+            </SocketProvider>
+          </Router>
+        </ThemeProvider>
+      </NotificationProvider>
+    </ToastProvider>
   )
 }
 

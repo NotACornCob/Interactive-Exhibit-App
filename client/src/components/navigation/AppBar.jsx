@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,26 +7,32 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { useCookies } from 'react-cookie';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import { ThemeProvider } from '@mui/material/styles';
 import { useTheme } from '../../context/ThemeContext';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import lightTheme from '../../lightTheme';
 import darkTheme from '../../darkTheme';
+import Switch from '@mui/material/Switch';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import 'react-toastify/dist/ReactToastify.css';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from '@mui/material/Badge';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNotification } from '../../context/NotificationContext';
+import { useToast } from '../../context/ToastContext';
 
 const pages = [  { text: 'Home', href: '/' },
                  { text: 'Reviews', href: '/Reviews' },
                  { text:'Leaderboard', href: '/Leaderboard'},
                  { text:'Team Leaderboard', href: '/TeamLeaderboard'}
                 ];
-const settings = ['Profile', 'Logout'];
+const settings = [ { text: 'Profile', href: '/Profile' },
+                  { text: 'Logout', href: '/Logout'}
+];
 
 const styles = {
   menuButton: {
@@ -44,11 +50,29 @@ const styles = {
   },
 };
 
+
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const [cookies] = useCookies(['session_id']);
+  const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const hasCookie = !!cookies.username;
+  const { notificationCount, resetNotificationCount } = useNotification();
+  const { toasts, removeToast } = useToast();
+
+  const handleOpenNotificationsMenu = (event) => {
+    setAnchorElNotifications(event.currentTarget);
+    resetNotificationCount(); // Reset count when opening menu
+  };
+
+  const handleCloseNotificationsMenu = () => {
+    setAnchorElNotifications(null);
+  };
+
+  const addNotification = (message) => {
+    toast(message);
+    setNotificationCount((prevCount) => prevCount + 1);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -69,8 +93,9 @@ function ResponsiveAppBar() {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <Box>
       {hasCookie ? (
-        <AppBar position="static" elevation={2} sx={{backgroundImage: 'none'}}>
+        <AppBar position="static" sx={{ backgroundImage: 'none' }}>
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <VideogameAssetIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: '#ffffff' }} />
@@ -91,7 +116,6 @@ function ResponsiveAppBar() {
               >
                 REC CENTER
               </Typography>
-
               <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
                   size="large"
@@ -159,14 +183,12 @@ function ResponsiveAppBar() {
                   </Button>
                 ))}
               </Box>
-
               <Box sx={{ flexGrow: 0 }}>
-              <IconButton sx={{ ml: 1 }} onClick={toggleTheme}>
-                {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-              </IconButton>
+              {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+              <Switch aria-label="login switch" onClick={toggleTheme} />
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Boi Sharp" src={cookies.username} />
+                  <IconButton color="#ffffff" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <AccountCircleIcon fontSize="large" sx={{ fill: '#ffffff' }} />
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -186,17 +208,46 @@ function ResponsiveAppBar() {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
+                    <MenuItem key={setting.text} href={setting.href} onClick={handleCloseUserMenu}>
+                      <Button href={setting.href} variant="contained" color="primary" >{setting.text}</Button>
                     </MenuItem>
                   ))}
                 </Menu>
+                <IconButton onClick={handleOpenNotificationsMenu} sx={{ p: 0, ml: 2 }}>
+                      <Badge badgeContent={notificationCount} color="error">
+                        <NotificationsIcon sx={{ fill: '#ffffff' }} />
+                      </Badge>
+                </IconButton>
+                <Menu
+                    sx={{ mt: '45px' }}
+                    id="notifications-appbar"
+                    anchorEl={anchorElNotifications}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElNotifications)}
+                    onClose={handleCloseNotificationsMenu}
+                  >
+                    {toasts.map((toast) => (
+                      <MenuItem key={toast.id} onClick={() => removeToast(toast.id)}>
+                        <Typography textAlign="center">{toast.message}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
               </Box>
             </Toolbar>
           </Container>
         </AppBar>
       ) : null}
+      </Box>
     </ThemeProvider>
   );
 }
+
 export default ResponsiveAppBar;

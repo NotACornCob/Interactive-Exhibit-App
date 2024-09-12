@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { CardActionArea } from '@mui/material';
 import { ReviewContext } from '../../context/ReviewContext';
 import Grid from '@mui/material/Grid';
@@ -60,10 +60,10 @@ const formik = useFormik({
       <Container>
     <Grid item xs={4} maxWidth="300">
     <Card >
+    <CardContent>
       <CardActionArea>
       <CardMedia component="img" height="200" image={review.exhibit.exhibit_img} alt= "featured review"/>
       </CardActionArea>
-        <CardContent>
           {EditMode ? (
             <div>
           <form onSubmit={formik.handleSubmit}>
@@ -90,7 +90,7 @@ const formik = useFormik({
               helperText={formik.touched.body && formik.errors.body}
             />
             <br/>
-              <Button color="primary" variant="contained" type="submit">
+              <Button variant="contained" type="submit">
               Submit
               </Button>
           </form>
@@ -103,12 +103,12 @@ const formik = useFormik({
                   {review.body}
                 </Typography>
                 <div sx={{'padding':5}}>
-          <Button color="info" variant="contained" fullWidth type="submit" onClick={editHandler} style={{ margin: '1px' }} >
+          <Button variant="contained" fullWidth type="submit" onClick={editHandler} style={{ backgroundColor:'#80807f', margin: '1px' }} >
                   Edit
           </Button>
           </div>
           <div padding={5} spacing={1}>
-          <Button color="error" variant="contained" fullWidth type="submit" onClick={deleteHandler} style={{ margin: '1px' }}>
+          <Button variant="contained" fullWidth type="submit" onClick={deleteHandler} style={{ margin: '1px' }}>
                   Delete
           </Button> 
           </div>

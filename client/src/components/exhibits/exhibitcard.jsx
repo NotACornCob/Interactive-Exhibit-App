@@ -37,10 +37,10 @@ const handleExpandClick = (event) => {
 };
   
   return (
-    <Box sx={{padding: '10px' }}>
-        <Grid container spacing={2} sx={{ alignItems: 'stretch', justifyContent: 'center' }}>
+    <Box elevation={6} sx={{padding: '10px' }}>
+        <Grid container spacing={2} sx={{ alignItems: 'baseline', justifyContent: 'center' }}>
             <Grid item xs={12} md={5}>
-                <Card sx={{ backgroundImage: 'none', width: '100%' }} elevation={3}>
+                <Card sx={{ backgroundImage: 'none', width: '100%' }} elevation={6}>
                     <CardContent sx={{ borderRadius: 0 }} elevation={3}>
                         <Typography gutterBottom variant="h5" component="div" textAlign="center">
                             {exhibit.name}
@@ -89,14 +89,11 @@ const handleExpandClick = (event) => {
                     </Collapse>
                 </Card>
             </Grid>
-            <Grid item xs={12} md={4}>
-                <Typography variant="body2" textAlign="center" padding="15px">
-                    What Today's Guests Are Saying About "{exhibit.name}"
-                </Typography>
+            <Grid item xs={12} md={4} >
                 <Grid container direction="column" spacing={2}>
                     {exhibit.reviews.map(review => (
                         <Grid item key={review.id}>
-                            <ReviewCard review={review} />
+                            <ReviewCard review={review}  alignItems="center" />
                         </Grid>
                     ))}
                 </Grid>

@@ -58,13 +58,13 @@ function TeamLeaderBoardList() {
   , [teams]);
 
     return (
-      <Container disableGutters="true" sx={{ bgcolor: '#262129'}}>
+      <Container disableGutters="true" >
         <Grid container direction="column"
         justify="center"
         alignItems="center"
         disableGutters="true">
         <Grid item xs={12} >
-          <Typography variant="h4" sx={{bgcolor:"#262129", alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Team Leaderboard</Typography>
+          <Typography variant="h4" sx={{alignItems: 'center', justifyContent: 'center', padding:"10px"}}>REC Team Leaderboard</Typography>
       </Grid>
     <div>{teamLeaderBoard}</div>
     </Grid>

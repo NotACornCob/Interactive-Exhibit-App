@@ -1,10 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import LoginForm from '../user/login';
 import { useCookies } from 'react-cookie';
 import ExhibitList from '../exhibits/exhibitlist';
 import { SocketContext } from '../../context/SocketContext.jsx';
 
-function Home() {
+function Home({ setIsLoggedIn }) {
 	const [cookies] = useCookies(['session_id']);
 	const socket = useContext(SocketContext);
 	const hasCookie = !!cookies.session_id;

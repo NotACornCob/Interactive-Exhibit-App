@@ -4,18 +4,19 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#625f63',
+      main: '#000000',
     },
     secondary: {
-      main: '#625f63',
+      main: '#d4d1d4',
     },
     background: {
-      default: '#3b393b',
+      default: '#1a191a',
     },
     text: {
       primary: '#ffffff',
       secondary: '#ffffff',
-      paragraph: '#ffffff',
+      paragraph: '#000000',
+      h4: '#ffffff',
     },
     typography: {
       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
@@ -24,7 +25,10 @@ const darkTheme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: '#ffffff'
+          color: '#ffffff',
+          h4: {
+            color: '#3959cf',
+          },
         },
       },
     },
@@ -32,22 +36,27 @@ const darkTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#625f63',
-          color: '#ffffff',
-          boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+          backgroundColor: '#000000',
+          backgroundImage: 'none !important',
+          color: '#000000',
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: 'none',
-          backgroundImage: 'none',
           '&.css-z1to57-MuiPaper-root-MuiCard-root': {
             backgroundColor: 'none',
             color: '#010506',
             boxShadow: 'none',
           },
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
         },
       },
     },
@@ -58,9 +67,22 @@ const darkTheme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#010506',
+          backgroundImage: 'none',
+          color: '#ffffff',
+          '&.css-10r5afb-MuiPaper-root-MuiAppBar-root': {
+            backgroundImage: 'none',
+          },
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         root: {
+          primary: '#ffffff',
           color: '#ffffff',
         },
       },
@@ -69,14 +91,14 @@ const darkTheme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#625f63',
-          color: '#ffffff',
+          color: '#b31111',
           '&:hover': {
             backgroundColor: '#4d4b4f',
           },
         },
         containedPrimary: {
           backgroundColor: '#625f63',
-          color: '#ffffff',
+          color: '#b37e7e',
           '&:hover': {
             backgroundColor: '#4d4b4f',
           },

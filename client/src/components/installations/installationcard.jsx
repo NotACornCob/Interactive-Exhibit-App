@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { SocketContext } from '../../context/SocketContext.jsx';
+import { useNotification } from '../../context/NotificationContext';
+import { useToast } from '../../context/ToastContext';
 
 function InstallationCard({installation}) {
   const [buttonStatus, setButtonStatus] = useState(false);
@@ -16,11 +18,19 @@ function InstallationCard({installation}) {
   const user_id = cookies.session_id;
   const [receivedUsernames, setReceivedUsernames] = useState([]);
   const [receivedInstallations, setReceivedInstallations] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
   const socket = useContext(SocketContext);
+  const { addNotification } = useNotification();
+  const { addToast } = useToast();
 
-  const notify = (data) => toast(data + '' + ' has gained 3 points!', {
-    theme:"dark"
-  });
+  const notify = (data) => {
+    const message = `${data} has gained 3 points!`;
+    addToast(message);
+    toast(message, {
+      theme: "dark",
+      limit: 1,
+    });
+  };
 
   const handleClick = (value) => {
     setButtonStatus(!buttonStatus);
@@ -30,11 +40,11 @@ function InstallationCard({installation}) {
   useEffect(() => {
     if (buttonStatus && socket) {
       console.log('client connected');
-      socket.emit('interact', user_id, installation_id);
-
+      socket.volatile.emit('interact', user_id, installation_id);
       socket.on("interact_data", (username, installation) => {
         console.log("data received");
         if (!receivedUsernames.includes(username) || !receivedInstallations.includes(installation)) {
+          addNotification("New message received!");
           notify(username);
           setReceivedUsernames((prevUsernames) => [...prevUsernames, username]);
           setReceivedInstallations((prevInstallations) => [...prevInstallations, installation]);
@@ -45,11 +55,11 @@ function InstallationCard({installation}) {
         socket.off("interact_data");
       };
     }
-  }, [buttonStatus, socket, user_id, installation_id, receivedUsernames, receivedInstallations]);
+  }, [buttonStatus, socket, user_id, installation_id, receivedUsernames, receivedInstallations, addNotification]);
 
   return (
     <div>
-      <Card color="primary" >
+      <Card color="primary" elevation={4}>
         <CardContent>
           <CardActionArea>
             <CardMedia
@@ -62,7 +72,7 @@ function InstallationCard({installation}) {
           <Typography gutterBottom component="div">
             {installation.name}
           </Typography>
-          <Button variant="contained" classname="btn" color="primary" fullWidth onClick={handleClick}>
+          <Button variant="contained" className="btn" color="primary" fullWidth onClick={handleClick}>
             Interact
           </Button> 
         </CardContent>

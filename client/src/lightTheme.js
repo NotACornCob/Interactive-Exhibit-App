@@ -4,10 +4,11 @@ const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#8869aa',
+      main: '#952929',
+      accent: '#bdb6b6',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#000000',
     },
     background: {
       default: '#dfdedf',
@@ -19,12 +20,12 @@ const lightTheme = createTheme({
     },
     button: {
       primary: {
-        main: '#ff6600',
+        main: '#bdb6b6',
       },
     },
     '&.btn': {
       primary: {
-        main: '#ff6600',
+        main: '#000000',
       },
     },
   },
@@ -32,8 +33,8 @@ const lightTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#88698a',
-          boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+          backgroundColor: '#952929',
+          backgroundImage: 'none',
         },
       },
     },
@@ -46,7 +47,7 @@ const lightTheme = createTheme({
       MuiBox: {
         styleOverrides: {
           root: {
-            backgroundColor: '#acaaac',
+            backgroundColor: '#000000',
             color: '#acaaac',
           },
           },
@@ -54,8 +55,8 @@ const lightTheme = createTheme({
         MuiButtonBase: {
           styleOverrides: {
             root: {
-              backgroundColor: '#ff6600',
-              color: '#ff6600',
+              backgroundColor: '#c2bfbf',
+              color: '#beb3b3',
             },
             },
           },
@@ -65,6 +66,13 @@ const lightTheme = createTheme({
       styleOverrides: {
         root: {
           color: '#ffffff',
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          fill: '#ffffff !important',
         },
       },
     },
@@ -84,10 +92,35 @@ const lightTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: '#ff6600',
-          color: '#ffffff',
+          backgroundColor: '#000000',
+          color: '#c4c0c0',
           '&:hover': {
-            backgroundColor: '#e65c00',
+            backgroundColor: '#000000',
+          },
+        },
+        containedPrimary: {
+          backgroundColor: '#000000',
+          color: '#000000',
+          '&:hover': {
+            backgroundColor: '#000000',
+          },
+          '&.MuiButton-contained': {
+            backgroundColor: '#000000',
+            color: '#000000',
+            '&:hover': {
+              backgroundColor: '#000000',
+            },
+          },
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#d6d6d6ff',
+          color: '#d3d3d3',
+          '&.css-10r5afb-MuiPaper-root-MuiAppBar-root': {
+            backgroundImage: 'none',
           },
         },
       },

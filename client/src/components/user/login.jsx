@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import { UserContext } from '/src/context/UserContext'
 import { SocketContext } from '../../context/SocketContext'
 import { ToastContainer, toast } from 'react-toastify';
@@ -86,9 +86,8 @@ import Box from '@mui/material/Box';
      <Box sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding:'5px' }}>
      <Card sx={{ margin: 'auto', padding:'5px', width:'400px', backgroundColor: '#ffffff' }}>
      <CardContent>
-        <CardHeader title="Welcome to the REC ROOM!" subheader="In order to get the most interactive experience possible, we require all our guests create a username before using our app." />
+        <CardHeader title="Welcome to the REC ROOM!" subheader="Please create a username." />
         <form onSubmit={formik.handleSubmit}>
-          
           <TextField
             fullWidth
             id="username"
@@ -100,9 +99,17 @@ import Box from '@mui/material/Box';
             error={formik.touched.username && Boolean(formik.errors.username)}
             helperText={formik.touched.username && formik.errors.username}
           />
-          <Button color="primary" variant="contained" fullWidth type="submit" onClick={handleClick} >
+          <div>
+          <Button 
+            variant="contained" 
+            fullWidth 
+            type="submit" 
+            onClick={handleClick}
+            sx={{ mt: '10px' }}
+          >
             Submit
           </Button>
+          </div>
         </form>
         </CardContent>
         </Card>
