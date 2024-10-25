@@ -1,6 +1,6 @@
-# The Sterling Cooper
+# Interactive Exhibit App
 
-The Sterling Cooper is a project made for Phase 4 of FlatIron's coding bootcamp. It emulates an app for a fictional museum called the Sterling-Cooper (credit to Mad Men for the name). The project was coded with Flask, SQLAlchemy and React.
+This is a project made for Phase 5 of FlatIron's coding bootcamp. It emulates an app that facilitates interaction with various exhibits at a museum. The project was coded with Flask, SQLAlchemy, SocketIO and React.
 
 ## Features
 
