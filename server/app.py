@@ -37,16 +37,24 @@ def handle_review():
 
 @socketio.on('interact')
 def handle_interact(user_id, installation_id):
-    user = User.query.filter(User.id == user_id).first()
-    points = User.query.filter(User.id == user_id).first().points
-    print(user.username)
-    installation = Installation.query.filter(Installation.id == installation_id).first()
-    installation.user_id = user_id
-    installation.user = user
-    db.session.commit()
-    print(installation.user_id)
-    socketio.emit('interact_data', user.username)  # Emit to 'REC' room
-    print('interact data sent')
+    try:
+        user = User.query.filter(User.id == user_id).first()
+        installation = Installation.query.filter(Installation.id == installation_id).first()
+        
+        # Update interaction points
+        user.interaction_points += 10  # or whatever point value you want
+        installation.user_id = user_id
+        installation.user = user
+        
+        db.session.commit()
+        
+        # Emit updated leaderboard data
+        emit_updated_leaderboards()
+        
+        socketio.emit('interact_data', user.username)
+        print(f'User {user.username} interacted and gained points')
+    except Exception as e:
+        print(f"Error in handle_interact: {e}")
 
 @socketio.on('user')
 def handle_user(id):
@@ -56,28 +64,57 @@ def handle_user(id):
 
 @socketio.on('users')
 def handle_users(users):
-    updated_users = []
-
-    for user in users:
-        user_id = user['id']
-        points = User.query.filter(User.id == user_id).first().review_points + User.query.filter(User.id == user_id).first().interaction_points
-        user['points'] = points
-        updated_users.append(user)
-        db.session.commit()
-    sorted_users = sorted(updated_users, key=lambda user: user['points'], reverse=True)
-    socketio.emit('users_data', sorted_users)
+    try:
+        updated_users = []
+        for user_data in User.query.all():  # Query all users directly from database
+            user_dict = {
+                'id': user_data.id,
+                'username': user_data.username,
+                'team_id': user_data.team_id,
+                'points': user_data.review_points + user_data.interaction_points  # Calculate total points
+            }
+            updated_users.append(user_dict)
+        
+        # Sort users by points
+        sorted_users = sorted(updated_users, key=lambda x: x['points'], reverse=True)
+        print("Emitting users data:", sorted_users)  # Debug log
+        socketio.emit('users_data', sorted_users)
+    except Exception as e:
+        print(f"Error in handle_users: {e}")
 
 @socketio.on('teams')
 def handle_teams(teams):
-    updated_teams = []
-
-    for team in teams:
-        team_id = team['id']
-        points = sum(team.points for team in Team.query.filter(Team.id == team_id).first().users)
-        team['points'] = points
-        updated_teams.append(team)
-    sorted_teams = sorted(updated_teams, key=lambda team: team['points'], reverse=True)
-    socketio.emit('teams_data', sorted_teams)
+    try:
+        updated_teams = []
+        for team_data in Team.query.all():  # Query all teams directly from database
+            # Calculate team points by summing all team members' points
+            team_points = sum(
+                user.review_points + user.interaction_points 
+                for user in team_data.users
+            )
+            
+            team_dict = {
+                'id': team_data.id,
+                'name': team_data.name,
+                'points': team_points,
+                'users': [
+                    {
+                        'id': user.id,
+                        'username': user.username,
+                        'team_id': user.team_id,
+                        'points': user.review_points + user.interaction_points
+                    } 
+                    for user in team_data.users
+                ]
+            }
+            updated_teams.append(team_dict)
+        
+        # Sort teams by points
+        sorted_teams = sorted(updated_teams, key=lambda x: x['points'], reverse=True)
+        print("Emitting teams data:", sorted_teams)  # Debug log
+        socketio.emit('teams_data', sorted_teams)
+    except Exception as e:
+        print(f"Error in handle_teams: {e}")
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -108,6 +145,72 @@ def handle_my_custom_event(json):
 def handle_delete(data):
     print('Deleted:', data)
 socketio.emit('deleted', 'Server possibly deleted your data:')
+
+# Add this function to emit updated leaderboard data
+def emit_updated_leaderboards():
+    # Emit updated user data
+    try:
+        updated_users = []
+        for user_data in User.query.all():
+            user_dict = {
+                'id': user_data.id,
+                'username': user_data.username,
+                'team_id': user_data.team_id,
+                'points': user_data.review_points + user_data.interaction_points
+            }
+            updated_users.append(user_dict)
+        
+        sorted_users = sorted(updated_users, key=lambda x: x['points'], reverse=True)
+        socketio.emit('users_data', sorted_users)
+        
+        # Also update team data
+        updated_teams = []
+        for team_data in Team.query.all():
+            team_points = sum(
+                user.review_points + user.interaction_points 
+                for user in team_data.users
+            )
+            
+            team_dict = {
+                'id': team_data.id,
+                'name': team_data.name,
+                'points': team_points,
+                'users': [
+                    {
+                        'id': user.id,
+                        'username': user.username,
+                        'team_id': user.team_id,
+                        'points': user.review_points + user.interaction_points
+                    } 
+                    for user in team_data.users
+                ]
+            }
+            updated_teams.append(team_dict)
+        
+        sorted_teams = sorted(updated_teams, key=lambda x: x['points'], reverse=True)
+        socketio.emit('teams_data', sorted_teams)
+        
+    except Exception as e:
+        print(f"Error updating leaderboards: {e}")
+
+# Similarly for reviews
+@socketio.on('review')
+def handle_review():
+    try:
+        review = Review.query.order_by(Review.id.desc()).first()
+        user = review.user
+        
+        # Update review points
+        user.review_points += 5  # or whatever point value you want
+        db.session.commit()
+        
+        # Emit updated leaderboard data
+        emit_updated_leaderboards()
+        
+        socketio.emit('review_data', user.username)
+        print(f'User {user.username} reviewed and gained points')
+    except Exception as e:
+        print(f"Error in handle_review: {e}")
 
 if __name__ == "__main__":
   socketio.run(app, port=5555, debug=True)
