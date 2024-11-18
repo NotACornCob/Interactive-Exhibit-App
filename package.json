@@ -9,7 +9,7 @@
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@socket.io/admin-ui": "^0.5.1",
-    "cookie": "^0.6.0",
+    "cookie": "^1.0.1",
     "flask": "^0.2.10",
     "formik-mui": "^5.0.0-alpha.0",
     "install": "^0.13.0",

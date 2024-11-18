@@ -33,22 +33,66 @@ function TeamLeaderBoardItem({team}) {
     color: theme.palette.text.secondary,
   }));
 
+  // Add logging to check if component is rendering and receiving props
+  useEffect(() => {
+    console.log('TeamLeaderBoardItem rendering:', team);
+  }, [team]);
+
+  // Add debugging logs
+  useEffect(() => {
+    console.log('TeamLeaderBoardItem rendered with team:', team);
+    console.log('Points value:', team?.points || 0);
+  }, [team]);
+
+  // Ensure we have valid data
+  if (!team || team.points === undefined) {
+    console.log('Missing team data or points');
+    return null;
+  }
+
   return (
-    <Container disableGutters="true" >
-        <Box disableGutters="true" sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding:'10px'}}>
+    <Container>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding:'10px'}}>
         <Grid container sx={{ margin:"0px", padding:"0px"}} >
-        <Card sx={{  width: '500px', margin: 'auto', padding: '5px' }} elevation={3} spacing={3}>
-        <CardContent sx={{borderRadius: 50}} elevation={3} xs={4} >
-        <Typography gutterBottom variant="h4" component="div" textAlign="center">
-        {team.points} points
-      </Typography>
-        <Typography sx={{color: "#3959cf"}}gutterBottom variant="h5" component="div" textAlign="center">
-        @{team.name}
-        </Typography>
-    </CardContent>
-    </Card>
-    </Grid>
-    </Box>
+          <Card 
+            sx={{  
+              width: '500px', 
+              margin: 'auto', 
+              padding: '5px',
+              backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#424242' : '#fff',
+              border: '1px solid',
+              borderColor: (theme) => theme.palette.mode === 'dark' ? '#fff' : '#000',
+            }} 
+            elevation={3} 
+          >
+            <CardContent sx={{borderRadius: 50}} elevation={3} xs={4} >
+              <Box sx={{ display: 'block' }}>
+                <Typography 
+                  gutterBottom 
+                  variant="h4" 
+                  component="div" 
+                  textAlign="center"
+                  sx={{
+                    color: (theme) => theme.palette.mode === 'dark' ? '#fff' : '#000',
+                    display: 'block'
+                  }}
+                >
+                  {`${team.points || 0} points`}
+                </Typography>
+              </Box>
+              <Typography 
+                gutterBottom 
+                variant="h5" 
+                component="div" 
+                textAlign="center" 
+                sx={{color: "#3959cf"}}
+              >
+                @{team.name}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Box>
     </Container>
   );
 }

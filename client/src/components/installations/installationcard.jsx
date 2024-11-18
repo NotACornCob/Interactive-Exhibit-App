@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -8,8 +8,7 @@ import Button from '@mui/material/Button';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { SocketContext } from '../../context/SocketContext.jsx';
-import { useNotification } from '../../context/NotificationContext';
-import { useToast } from '../../context/ToastContext';
+import { UserContext } from '../../context/UserContext.jsx';
 
 function InstallationCard({installation}) {
   const [buttonStatus, setButtonStatus] = useState(false);
@@ -20,42 +19,40 @@ function InstallationCard({installation}) {
   const [receivedInstallations, setReceivedInstallations] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const socket = useContext(SocketContext);
-  const { addNotification } = useNotification();
-  const { addToast } = useToast();
-
-  const notify = (data) => {
-    const message = `${data} has gained 3 points!`;
-    addToast(message);
-    toast(message, {
-      theme: "dark",
-      limit: 1,
-    });
-  };
-
-  const handleClick = (value) => {
-    setButtonStatus(!buttonStatus);
-    setInstallationId(installation.id);
-  };  
+  const { user } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (buttonStatus && socket) {
-      console.log('client connected');
-      socket.volatile.emit('interact', user_id, installation_id);
-      socket.on("interact_data", (username, installation) => {
-        console.log("data received");
-        if (!receivedUsernames.includes(username) || !receivedInstallations.includes(installation)) {
-          addNotification("New message received!");
-          notify(username);
-          setReceivedUsernames((prevUsernames) => [...prevUsernames, username]);
-          setReceivedInstallations((prevInstallations) => [...prevInstallations, installation]);
-        }
-      });
+    if (!socket) return;
 
-      return () => {
-        socket.off("interact_data");
-      };
+    const handleInteractData = (username) => {
+      console.log('Received interact_data:', username);
+      toast(`${username} gained 10 points for interacting!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    };
+
+    socket.on('interact_data', handleInteractData);
+
+    return () => {
+      socket.off('interact_data', handleInteractData);
+    };
+  }, [socket]);
+
+  const handleInteract = () => {
+    if (socket && user) {
+      setIsLoading(true);
+      console.log('Emitting interact event:', { user_id: user.id, installation_id: installation.id });
+      socket.emit('interact', user.id, installation.id);
+      setIsLoading(false);
     }
-  }, [buttonStatus, socket, user_id, installation_id, receivedUsernames, receivedInstallations, addNotification]);
+  };
 
   return (
     <div>
@@ -72,8 +69,8 @@ function InstallationCard({installation}) {
           <Typography gutterBottom component="div">
             {installation.name}
           </Typography>
-          <Button variant="contained" className="btn" color="primary" fullWidth onClick={handleClick}>
-            Interact
+          <Button variant="contained" className="btn" color="primary" fullWidth onClick={handleInteract} disabled={isLoading}>
+            {isLoading ? 'Interacting...' : 'Interact'}
           </Button> 
         </CardContent>
       </Card>

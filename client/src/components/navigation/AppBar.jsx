@@ -24,6 +24,7 @@ import Badge from '@mui/material/Badge';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNotification } from '../../context/NotificationContext';
 import { useToast } from '../../context/ToastContext';
+import { useNavigate } from 'react-router-dom';
 
 const pages = [  { text: 'Home', href: '/' },
                  { text: 'Reviews', href: '/Reviews' },
@@ -59,6 +60,7 @@ function ResponsiveAppBar() {
   const hasCookie = !!cookies.username;
   const { notificationCount, resetNotificationCount } = useNotification();
   const { toasts, removeToast } = useToast();
+  const navigate = useNavigate();
 
   const handleOpenNotificationsMenu = (event) => {
     setAnchorElNotifications(event.currentTarget);
@@ -79,6 +81,11 @@ function ResponsiveAppBar() {
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+  };
+
+  const handleNavigation = (href) => {
+    handleCloseNavMenu();
+    navigate(href);
   };
 
   const handleCloseNavMenu = () => {
@@ -146,7 +153,10 @@ function ResponsiveAppBar() {
                   }}
                 >
                   {pages.map((page) => (
-                    <MenuItem key={page.text} onClick={handleCloseNavMenu}>
+                    <MenuItem 
+                      key={page.text} 
+                      onClick={() => handleNavigation(page.href)}
+                    >
                       <Typography textAlign="center">{page.text}</Typography>
                     </MenuItem>
                   ))}
@@ -157,7 +167,7 @@ function ResponsiveAppBar() {
                 variant="h5"
                 noWrap
                 component="a"
-                href=""
+                href="/"
                 sx={{
                   mr: 2,
                   display: { xs: 'flex', md: 'none' },

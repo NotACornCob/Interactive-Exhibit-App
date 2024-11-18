@@ -55,7 +55,18 @@ function App() {
                     <InstallationProvider>
                       <TeamProvider>
                         <CookiesProvider defaultSetOptions={{ path: '/' }}>
-                          <ToastContainer />
+                          <ToastContainer
+                            position="top-right"
+                            autoClose={5000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            theme="dark"
+                          />
                           <Box sx={{ backgroundColor: theme.palette.background.default, minHeight: '100vh' }}>
                             <ResponsiveAppBar />
                             <Routes>
